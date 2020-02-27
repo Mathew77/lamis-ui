@@ -22,7 +22,11 @@ import {
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import {Link} from 'react-router-dom'; 
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'; 
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Row, Col} from 'reactstrap'; 
+import Spinner from 'react-bootstrap/Spinner';
+// React Notification
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import CheckInModal from 'components/CheckIn/CheckInModal';
 import {url} from 'axios/url';
 
@@ -54,51 +58,64 @@ const StyledTableRow = withStyles(theme => ({
 }))(TableRow);
  
 
-export default function MatPaginationTable() {  
+export default function MatPaginationTable(props) {  
   const classes = useStyles();  
-
   const [page, setPage] = React.useState(0);  
-
   const [data, setData] = useState([]);  
   //Modal state
   const [modal, setModal] = useState(false);
-
   const toggle = () => setModal(!modal);
     //end og modal state
   const [rowsPerPage, setRowsPerPage] = React.useState(5);  
   //Get list of Visit/checkin patients API 
   const apipatient = url+"visits/";
   useEffect(() => {    
-
         const GetData = async () => {    
-
           const result = await axios(apipatient);    
-
           setData(result.data);  
           console.log(result.data);   
         }  
         GetData();     
-
 }, []);   
 
   const handleChangePage = (event, newPage) => {  
-
     setPage(newPage);  
-
   };  
-
   const handleChangeRowsPerPage = event => {  
-
     setRowsPerPage(+event.target.value);  
-
     setPage(0);  
-
   };  
+
+  //Save Checkedin 
+  const [checkin, setcheckedin] = useState({ dateVisitStart: '', timeVisitStart: '' });  
+  const [showLoading, setShowLoading] = useState(false);  
+  const apiUrl = url+"visits";  
+  
+  const saveCheckedin = (e) => {  
+    e.preventDefault();  
+
+    const data = { dateVisitStart: checkin.dateVisitStart, timeVisitStart:checkin.dateVisitStart };  
+    console.log(data);
+    axios.post(apiUrl, data)
+        .then((result) => {          
+          setShowLoading(false);
+          props.history.push('/checkedin-patients')
+          toast.success("Patient Checked In was Successful!");
+          console.log(result);
+        }).catch((error) => {
+            console.log(error);
+        setShowLoading(false)
+        setcheckedin(false);
+        // console.log("Error in CreateBook!");
+        //toast.error("Something went wrong!");
+        }
+        ); 
+  }; 
 
   return (  
 
     <Paper className={classes.root}>  
-
+        <ToastContainer autoClose={2000} />
       <TableContainer className={classes.container}>  
 
         <Table stickyHeader aria-label="sticky table">  
@@ -161,9 +178,20 @@ export default function MatPaginationTable() {
             <Modal isOpen={modal} toggle={toggle} size="lg">
                 <ModalHeader toggle={toggle}>Check In Patient</ModalHeader>
                 <ModalBody>
-                    <CheckInModal  />
+                    <CheckInModal  visitstart={checkin.dateVisitStart} visittime={checkin.dateVisitStart} saveCheckedin={saveCheckedin}/>
                 </ModalBody>
+
                 <ModalFooter>
+                    <Row>
+                    <Col md={12}>
+                    {showLoading && 
+                        
+                        <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                        </Spinner> 
+                    } 
+                    </Col> 
+                    </Row>
                     <Button color="primary" onClick={toggle}>Check In</Button>{' '}
                     <Button color="secondary" onClick={toggle}>Close</Button>
                 </ModalFooter>

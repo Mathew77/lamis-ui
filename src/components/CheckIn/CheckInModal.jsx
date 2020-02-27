@@ -8,6 +8,7 @@ import {
   } from 'reactstrap';
 
 //Date Picker
+import 'react-widgets/dist/css/react-widgets.css';
 import { DateTimePicker } from 'react-widgets';
 import Moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
@@ -15,7 +16,7 @@ import momentLocalizer from 'react-widgets-moment';
 Moment.locale('en');
 momentLocalizer();
 
-export default function MaterialUIPickers() {
+export default function MaterialUIPickers(props) {
     // The first commit of Material-UI
 
 
