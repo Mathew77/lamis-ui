@@ -12,15 +12,10 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';  
 
 import TableContainer from '@material-ui/core/TableContainer';  
-
 import TableHead from '@material-ui/core/TableHead';  
-
 import TablePagination from '@material-ui/core/TablePagination';  
-
 import TableRow from '@material-ui/core/TableRow';  
-
 import axios from 'axios';    
-
 import { useState, useEffect } from 'react' ;
 import {
     MdDashboard, MdCancel
@@ -31,24 +26,39 @@ import {
     FaUserCheck
 } from 'react-icons/fa';
 import {Link} from 'react-router-dom'; 
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'; 
-import CheckInModal from 'components/CheckIn/CheckInModal';
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader,
+    Col,
+    FormGroup,
+    Input,
+    Label,
+    Row,
+    Form
+} from 'reactstrap'; 
+
+//Date Picker
+import 'react-widgets/dist/css/react-widgets.css';
+import { DateTimePicker } from 'react-widgets';
+import Moment from 'moment';
+import momentLocalizer from 'react-widgets-moment';
+import Spinner from 'react-bootstrap/Spinner';
+// React Notification
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+
 import {url} from 'axios/url';
+//Dtate Picker package
+Moment.locale('en');
+momentLocalizer();
+
 
 const useStyles = makeStyles({  
-
   root: {  
-
     width: '100%',  
-
   },  
-
   container: {  
-
     maxHeight: 440,  
   }, 
-  
-  
+   
 
 });  
 const StyledTableCell = withStyles(theme => ({
@@ -70,7 +80,7 @@ const StyledTableRow = withStyles(theme => ({
 
   
 
-export default function MatPaginationTable() {  
+export default function MatPaginationTable(props) {  
   const classes = useStyles();  
 
   const [page, setPage] = React.useState(0);  
@@ -83,19 +93,44 @@ export default function MatPaginationTable() {
     //end og modal state
   const [rowsPerPage, setRowsPerPage] = React.useState(5);  
   //Get list of Visit/checkin patients API 
-  const apipatient = url+"patients/";
-  useEffect(() => {    
+    const apipatient = url+"patients/";
+    useEffect(() => {    
 
-        const GetData = async () => {    
+            const GetData = async () => {    
+            const result = await axios(apipatient);    
 
-          const result = await axios(apipatient);    
+            setData(result.data);  
+            console.log(result.data);   
+            }  
+            GetData();     
 
-          setData(result.data);  
-          console.log(result.data);   
-        }  
-        GetData();     
+    }, []);   
 
-}, []);   
+      //Save Checkedin 
+  const [checkin, setcheckedin] = useState({ dateVisitStart: '', timeVisitStart: '', visit_type_id:'' });  
+  const [showLoading, setShowLoading] = useState(false);  
+  const apiUrl = url+"visits";  
+  
+  const saveCheckedin = (e) => {  
+    e.preventDefault();  
+
+    const data = { dateVisitStart: checkin.dateVisitStart, timeVisitStart:checkin.dateVisitStart };  
+    console.log(data);
+    axios.post(apiUrl, data)
+        .then((result) => {          
+          setShowLoading(false);
+          props.history.push('/checkedin-patients')
+          toast.success("Patient Checked In was Successful!");
+          console.log(result);
+        }).catch((error) => {
+            console.log(error);
+        setShowLoading(false)
+        setcheckedin(false);
+        // console.log("Error in CreateBook!");
+        //toast.error("Something went wrong!");
+        }
+        ); 
+  }; 
 
   const handleChangePage = (event, newPage) => {  
 
@@ -114,7 +149,7 @@ export default function MatPaginationTable() {
   return (  
 
     <Paper className={classes.root}>  
-
+     <ToastContainer autoClose={2000} />
       <TableContainer className={classes.container}>  
 
         <Table stickyHeader aria-label="sticky table">  
@@ -150,11 +185,11 @@ export default function MatPaginationTable() {
                   {row.id}  
 
                 </TableCell>  
-                <TableCell align="right">{row.name}</TableCell>  
+              <TableCell align="right">{row.firstName} {' '} {row.lastName}</TableCell>  
 
-                <TableCell align="right">{row.email}</TableCell>  
+                <TableCell align="right">{row.mobilePhoneNumber}</TableCell>  
 
-                <TableCell align="right">{row.username}</TableCell>  
+                <TableCell align="right">{row.dob}</TableCell>  
 
                 <TableCell align="right">
                     <Tooltip title="Patient Dashboard">
@@ -190,9 +225,49 @@ export default function MatPaginationTable() {
             <Modal isOpen={modal} toggle={toggle} size="lg">
                 <ModalHeader toggle={toggle}>Check In Patient</ModalHeader>
                 <ModalBody>
-                    <CheckInModal  />
+                    <Form onSubmit={saveCheckedin}>
+                    <Row form>
+                    <Col md={4}>
+
+                        <FormGroup>
+                            <Label for="qualification">Visit Type</Label>
+                            <Input type="select" name="educationId" value={checkin.visit_type_id}  >
+                                <option value="1">Booked</option>
+                                <option value="2">Unbooked</option>
+
+                            </Input>
+                        </FormGroup>
+
+                    </Col>
+        
+                    <Col md={4}>
+                    <FormGroup>
+                        <Label for="middleName">Date Of Visit</Label>
+                        
+                        <DateTimePicker time={false} name="dateRegistration"  id="dateRegistration"   />
+                    </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                    <FormGroup>
+                        <Label for="middleName">Time of Visit</Label>
+                        
+                        <DateTimePicker date={false} name="dateRegistration"  id="dateRegistration"   />
+                    </FormGroup>
+                    </Col>
+                </Row>
+                </Form>
                 </ModalBody>
                 <ModalFooter>
+                <Row>
+                    <Col md={12}>
+                    {showLoading && 
+                        
+                        <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                        </Spinner> 
+                    } 
+                    </Col> 
+                    </Row>
                     <Button color="primary" onClick={toggle}>Check In</Button>{' '}
                     <Button color="secondary" onClick={toggle}>Close</Button>
                 </ModalFooter>

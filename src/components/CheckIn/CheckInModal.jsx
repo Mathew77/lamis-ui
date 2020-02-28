@@ -16,7 +16,7 @@ import momentLocalizer from 'react-widgets-moment';
 Moment.locale('en');
 momentLocalizer();
 
-export default function MaterialUIPickers(props) {
+export default function MaterialUIPickers(visitstart, visittime, saveCheckedin) {
     // The first commit of Material-UI
 
 

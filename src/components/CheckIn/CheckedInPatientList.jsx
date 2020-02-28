@@ -23,9 +23,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import {Link} from 'react-router-dom'; 
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Row, Col} from 'reactstrap'; 
-import Spinner from 'react-bootstrap/Spinner';
+// import Spinner from 'react-bootstrap/Spinner';
 // React Notification
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import CheckInModal from 'components/CheckIn/CheckInModal';
 import {url} from 'axios/url';
@@ -86,31 +86,7 @@ export default function MatPaginationTable(props) {
     setPage(0);  
   };  
 
-  //Save Checkedin 
-  const [checkin, setcheckedin] = useState({ dateVisitStart: '', timeVisitStart: '' });  
-  const [showLoading, setShowLoading] = useState(false);  
-  const apiUrl = url+"visits";  
-  
-  const saveCheckedin = (e) => {  
-    e.preventDefault();  
 
-    const data = { dateVisitStart: checkin.dateVisitStart, timeVisitStart:checkin.dateVisitStart };  
-    console.log(data);
-    axios.post(apiUrl, data)
-        .then((result) => {          
-          setShowLoading(false);
-          props.history.push('/checkedin-patients')
-          toast.success("Patient Checked In was Successful!");
-          console.log(result);
-        }).catch((error) => {
-            console.log(error);
-        setShowLoading(false)
-        setcheckedin(false);
-        // console.log("Error in CreateBook!");
-        //toast.error("Something went wrong!");
-        }
-        ); 
-  }; 
 
   return (  
 
@@ -144,7 +120,7 @@ export default function MatPaginationTable(props) {
 
                 <TableCell component="th" scope="row">  
 
-                  {row.id}  
+                  {row.hospitalNumber}  
 
                 </TableCell>  
                 <TableCell align="center">{row.dateVisitStart}</TableCell>  
@@ -178,18 +154,13 @@ export default function MatPaginationTable(props) {
             <Modal isOpen={modal} toggle={toggle} size="lg">
                 <ModalHeader toggle={toggle}>Check In Patient</ModalHeader>
                 <ModalBody>
-                    <CheckInModal  visitstart={checkin.dateVisitStart} visittime={checkin.dateVisitStart} saveCheckedin={saveCheckedin}/>
+                    <CheckInModal  />
                 </ModalBody>
 
                 <ModalFooter>
                     <Row>
                     <Col md={12}>
-                    {showLoading && 
-                        
-                        <Spinner animation="border" role="status">
-                        <span className="sr-only">Loading...</span>
-                        </Spinner> 
-                    } 
+                    
                     </Col> 
                     </Row>
                     <Button color="primary" onClick={toggle}>Check In</Button>{' '}

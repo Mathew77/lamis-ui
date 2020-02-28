@@ -108,13 +108,13 @@ export default function MatPaginationTable() {
 
               <StyledTableCell>Patient ID</StyledTableCell>  
 
-              <StyledTableCell align="right">Patient Name</StyledTableCell>  
+              <StyledTableCell align="center">Patient Name</StyledTableCell>  
 
-              <StyledTableCell align="right">Phone Number</StyledTableCell>  
+              <StyledTableCell align="center">Phone Number</StyledTableCell>  
 
-              <StyledTableCell align="right">Age </StyledTableCell>  
+              <StyledTableCell align="center">Age </StyledTableCell>  
 
-              <StyledTableCell align="right">Action</StyledTableCell>  
+              <StyledTableCell align="center">Action</StyledTableCell>  
 
  
 
@@ -129,18 +129,18 @@ export default function MatPaginationTable() {
 
                 <StyledTableRow >  
 
-                      <TableCell component="th" scope="row">  
+                      <TableCell component="th" scope="row" align="left">  
 
                         {row.id}  
 
                       </TableCell>  
-                      <TableCell align="right">{row.name}</TableCell>  
+                      <TableCell align="center">{row.firstName} {' '} {row.lastName}</TableCell>  
 
-                      <TableCell align="right">{row.email}</TableCell>  
+                      <TableCell align="center">{row.mobilePhoneNumber}</TableCell>  
 
-                      <TableCell align="right">{row.username}</TableCell>  
+                      <TableCell align="center">{row.dob}</TableCell>  
 
-                      <TableCell align="right">{row.website}</TableCell>  
+                      <TableCell align="center">----</TableCell>  
       
 
                     </StyledTableRow>  
