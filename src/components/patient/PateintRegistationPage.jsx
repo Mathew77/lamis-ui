@@ -106,7 +106,6 @@ const PatientRegistration = (props) => {
         lastName: '', 
         email:'',
         facilityId: '1',
-        dob:'',
         dobEstimated:'',
         educationId:'',
         genderId:'',
@@ -121,6 +120,7 @@ const PatientRegistration = (props) => {
         zipCode:'',
         stateId:'',
         street:'',
+        dateRegistration: new Date()
     });  
     
     const [showLoading, setShowLoading] = useState(false);
@@ -131,7 +131,7 @@ const PatientRegistration = (props) => {
       e.preventDefault();
       const data = { 
             hospitalNumber: patient.hospitalNumber,           
-            dateRegistration: "01:11:2020",
+            dateRegistration: patient.dateRegistration,
             facilityId: '1',
            
             "person": {
@@ -278,7 +278,7 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="hospitalNumber">Patient Id</Label>
-                                <Input type="text" name="hospitalNumber" id="hospitalNumber" placeholder="Patient ID " value={patient.hospitalNumber} onChange="onChange"/>
+                                <Input type="text" name="hospitalNumber" id="hospitalNumber" placeholder="Patient ID " value={patient.hospitalNumber} onChange={onChange}/>
                             </FormGroup>
                             </Col>
                             
@@ -286,7 +286,9 @@ const PatientRegistration = (props) => {
                             <FormGroup>
                                 <Label for="middleName">Date Of Registration</Label>
                                 
-                                <DateTimePicker time={false} name="dateRegistration"  id="dateRegistration"   value={patient.dateRegistration}   onChange={value1 => setPatient({...patient, dateRegistration: value1})}/>
+                                <DateTimePicker time={false} name="dateRegistration"  id="dateRegistration"   value={patient.dateRegistration}   onChange={value1 => setPatient({...patient, dateRegistration: value1})}
+                                defaultValue={new Date()} max={new Date()}
+                                />
                             </FormGroup>
                             </Col>
                             
@@ -295,20 +297,20 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="firstName">First Name</Label>
-                                <Input type="text" name="firstName" id="firstName" placeholder="First Name" value={patient.firstName} />
+                                <Input type="text" name="firstName" id="firstName" placeholder="First Name" value={patient.firstName} onChange={onChange} />
                             </FormGroup>
                             </Col>
                             
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="middleName">Other Name(s)</Label>
-                                <Input type="text" name="otherNames" id="otherNames" placeholder="Middle Name" value={patient.otherNames}/>
+                                <Input type="text" name="otherNames" id="otherNames" placeholder="Middle Name" value={patient.otherNames} onChange={onChange}/>
                             </FormGroup>
                             </Col>
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="lastName">Last Name </Label>
-                                <Input type="text" name="lastName" id="lastName" placeholder="Last Name" value={patient.lastName} />
+                                <Input type="text" name="lastName" id="lastName" placeholder="Last Name" value={patient.lastName} onChange={onChange} />
                             </FormGroup>
                             </Col>
                         </Row>
@@ -317,7 +319,7 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                                 <FormGroup>
                                     <Label for="maritalStatus">Gender</Label>
-                                    <Input type="select" name="genderId" id="genderId" value={patient.genderId}  >
+                                    <Input type="select" name="genderId" id="genderId" value={patient.genderId} onChange={onChange} >
                                         <option value="1">Female</option>
                                         <option value="2">Male</option>
                                         
@@ -327,7 +329,7 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="occupation">Occupation</Label>
-                                <Input type="select" name="occupationId" id="occupationId" value={patient.occupationId} >
+                                <Input type="select" name="occupationId" id="occupationId" value={patient.occupationId} onChange={onChange}>
                                     <option value="1">Students</option>
                                     <option value="2">Business</option>
                                     <option value="3">Government</option>
@@ -353,7 +355,7 @@ const PatientRegistration = (props) => {
                         <Col md={4}>
                             <FormGroup>
                                 <Label for="maritalStatus">Marital Status</Label>
-                                <Input type="select" name="maritalStatusId" id="maritalStatusId" value={patient.maritalStatusId} >
+                                <Input type="select" name="maritalStatusId" id="maritalStatusId" value={patient.maritalStatusId} onChange={onChange}>
                                     <option value="1">Single</option>
                                     <option value="2">Married</option>
                                     <option value="3">Divorce</option>
@@ -363,7 +365,7 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                             <FormGroup >
                                 <Label>Date OF Birth</Label>
-                                <DateTimePicker time={false} name="dob"  dropUp  />
+                                <DateTimePicker time={false} name="dob"  dropUp onChange={value1 => setPatient({...patient, dob: value1})} max={new Date()} />
 
                             </FormGroup>
                             </Col>
@@ -372,20 +374,20 @@ const PatientRegistration = (props) => {
                                 <Row form>
                                         <Col md={4}>
                                         <FormGroup>
-                                            <Label for="phoneNumber">Year</Label>
-                                            <Input type="text" name="year" id="year" placeholder="Year" value={patient.Estimate}  />
+                                            <Label for="year">Year</Label>
+                                            <Input type="text" name="year" id="year" placeholder="Year" value={patient.Estimate} onChange={onChange} />
                                         </FormGroup>
                                         </Col>
                                         <Col md={4}>
                                         <FormGroup>
-                                            <Label for="phoneNumber">Months</Label>
-                                            <Input type="text" name="months" id="months" placeholder="Months" value={patient.EstimateMonths}  />
+                                            <Label for="year">Months</Label>
+                                            <Input type="text" name="months" id="months" placeholder="Months" value={patient.EstimateMonths} onChange={onChange} />
                                         </FormGroup>
                                         </Col>
                                         <Col md={4}>
                                         <FormGroup>
-                                            <Label for="phoneNumber">Days</Label>
-                                            <Input type="text" name="days" id="days" placeholder="Days" value={patient.EstimateDays}  />
+                                            <Label for="year">Days</Label>
+                                            <Input type="text" name="days" id="days" placeholder="Days" value={patient.EstimateDays} onChange={onChange} />
                                         </FormGroup>
                                         </Col>
                                 </Row>
@@ -416,19 +418,20 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="phoneNumber">Phone Number</Label>
-                                <Input type="text" name="mobilePhoneNumber" id="mobilePhoneNumber" placeholder="Phone Number" value={patient.mobilePhoneNumber}  />
+                                <Input type="text" name="phoneNumber" id="phoneNumber" placeholder="Phone Number" value={patient.mobilePhoneNumber} 
+                                onChange={onChange} />
                             </FormGroup>
                             </Col>
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="altPhoneNumber">Alt. Phone Number</Label>
-                                <Input type="text" name="alternatePhoneNumber" id="alternatePhoneNumber" placeholder="Alternative Number" value={patient.alternatePhoneNumber}  />
+                                <Input type="text" name="alternatePhoneNumber" id="alternatePhoneNumber" placeholder="Alternative Number" value={patient.alternatePhoneNumber}  onChange={onChange}/>
                             </FormGroup>
                             </Col>
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="emailAddress">Email Address</Label>
-                                <Input type="email" name="email" id="email" placeholder="Email Address" value={patient.email}  />
+                                <Input type="email" name="email" id="email" placeholder="Email Address" value={patient.email} onChange={onChange}  />
                             </FormGroup>
                             </Col>
                         </Row>
@@ -562,8 +565,8 @@ const PatientRegistration = (props) => {
                             <Row form>
                                 <Col md={3}>
                                 <FormGroup>
-                                    <Label for="mobilePhoneNumber">Phone No.</Label>
-                                    <Input type="text" name="mobilePhoneNumber" id="mobilePhoneNumber" placeholder="Relative Phone No." value={relative.mobilePhoneNumber} onChange={onRelativeChange}/>
+                                    <Label for="relativePhoneNumber">Phone No.</Label>
+                                    <Input type="text" name="relativePhoneNumber" id="relativePhoneNumber" placeholder="Relative Phone No." value={relative.mobilePhoneNumber} onChange={e => setRelative({...relative, mobilePhoneNumber: e.target.value})}/>
                                 </FormGroup>
                                 </Col>
                                 <Col md={3}>
