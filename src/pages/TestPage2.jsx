@@ -92,7 +92,7 @@ export default function MatPaginationTable() {
 
             <TableRow>  
 
-              <TableCell>Id</TableCell>  
+              <TableCell>Ids</TableCell>  
 
               <TableCell align="right">Name</TableCell>  
 
@@ -173,4 +173,4 @@ export default function MatPaginationTable() {
 
   );  
 
-} 
+}
