@@ -104,12 +104,10 @@ const useStyles = makeStyles(theme => ({
   
 
 export default function ConsultationPage(props) {
-    const classes = useStyles();
-    
+    const classes = useStyles();  
     const {getpatient} =props.getpatientdetails ;
-   
-   const PatientID = getpatient.row.patientId;
-   const visitId = getpatient.row.id;
+    const PatientID = getpatient.row.patientId;
+    const visitId = getpatient.row.id;
    //console.log(getpatient);
     //Save Assign Clinician 
     const [consult, setconsult] = useState({ 
