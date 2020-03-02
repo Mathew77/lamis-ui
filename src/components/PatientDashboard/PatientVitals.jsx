@@ -5,7 +5,9 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
-
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import {url} from 'axios/url';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,8 +30,27 @@ const chips = {
 };
 
 export default function PatientVitals(props) {
-  const classes = useStyles();
+    const getpatientID =props.getpatientID;
+    const classes = useStyles();
+    const [data, setData] = useState(); 
+    // const newid = data;
+    
+    //console.log(data..patientId);
+    const apistate = url+"encounters/CLINICAL_SERVICE/VITAL_SIGNS_FORM/"+getpatientID+"/latest";
+    useEffect(() => {    
+    const GetData = async () => {    
+        const result = await axios(apistate);    
+        setData(result.data.formData);  
+        //console.log(result.data.formData);   
+    }  
+    GetData();     
 
+    }, []); 
+
+
+//const newdata= data;
+//const {myObjStr} = JSON.stringify(newdata);
+console.log(data);
   return (
     <div className={classes.root}>
             <Card className={classes.cardroot} style={props.height} >
@@ -38,11 +59,14 @@ export default function PatientVitals(props) {
                         Recent Vital Signs
                         </Typography>
                             <Grid container spacing={12}>
+                            
                                 <Grid item xs='6'>
                                     <Typography  color="textPrimary" gutterBottom>
-                                        Pulse : <Chip variant="outlined" size="small"  label="56pm" style={chips}/></Typography>
+                                        
+                                        Pulse :<Chip variant="outlined" size="small"  label="56pm" style={chips}/></Typography>
                                     
                                 </Grid>
+                          
                                 <Grid item xs='6'>
                                     <Typography  color="textPrimary" gutterBottom> 
                                             Weight: <Chip variant="outlined" size="small" style={chips} label="56pm" />

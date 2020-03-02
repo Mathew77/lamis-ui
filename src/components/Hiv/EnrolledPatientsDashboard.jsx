@@ -10,8 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Chip from '@material-ui/core/Chip';
 import TagFacesIcon from '@material-ui/icons/TagFaces';
 // {/* Auto textfield complete */}
@@ -44,13 +42,11 @@ CardBody,
 Col,
 Row,
 FormGroup,
-Input,
 } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 
 //the paper for the patient detail at the header 
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 // import List from '@material-ui/core/List';
@@ -61,7 +57,9 @@ import PatientAlert from 'components/PatientDashboard/PatientAlert';
 import PatientAllergies from 'components/PatientDashboard/PatientAllergies';
 import PatientVitals from 'components/PatientDashboard/PatientVitals';
 import PatientLabTest from 'components/PatientDashboard/PatientLabTest';
-import ClinicalHistory from 'components/PatientDashboard/ClinicalHistory'
+import ClinicalHistory from 'components/PatientDashboard/ClinicalHistory';
+import Consultation from './consulatation/consultation';
+import   PatientDetailCard from 'components/Functions/PatientDetailCard';
 
 const options = [
   
@@ -148,15 +146,7 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(0.5),
         },
     },
-    chiproot: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        padding: theme.spacing(0.5),
-    },
-    chip: {
-        margin: theme.spacing(0.5),
-    },
+    
     checkboxroot: {
         display: 'flex',
     },
@@ -227,7 +217,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default function ScrollableTabsButtonForce() {
+export default function ScrollableTabsButtonForce(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -269,39 +259,14 @@ export default function ScrollableTabsButtonForce() {
     setAnchorEl(null);
   };
 
+
+
   return (
     <div className={classes.root}>
-         <div className={classes.inforoot} style={{ backgroundColor: 'blue !important'}}>
-            <ExpansionPanel defaultExpanded>
-                <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1c-content"
-                id="panel1c-header"
-                >
-                <div className={classes.column}>
-                    <Typography className={classes.heading}>
-                        Name: Mathew Adeoye
-                        <br/>
-                        Gender : Female
-                    </Typography>
-                </div>
-                <div className={classes.column}>
-                    <Typography className={classes.secondaryHeading}>
-                        Birthday : June, 14 1990 (20 years)
-                        <br/>
-                        phone Number : +234567890
-                    </Typography>
-                </div>
-                <div className={classes.column}>
-                    <Typography className={classes.secondaryHeading}>
-                        Email Address : Mathew Adegbite
-                        
-                    </Typography>
-                </div>
-                </ExpansionPanelSummary>
-               
-            </ExpansionPanel>
-        </div>
+        <div className={classes.inforoot} >
+            <PatientDetailCard getpatientdetails={props.location.state }/>   
+        </div> 
+
       <AppBar position="static" >
         <Tabs
           value={value}
@@ -351,7 +316,7 @@ export default function ScrollableTabsButtonForce() {
                     <PatientAlert height={cardHeight}/>   
                 </Grid>
                 <Grid item xs='6'>
-                    <PatientAllergies height={cardHeight}/>   
+                    <PatientAllergies height={cardHeight} addstatus={false}/>   
                 </Grid>
                 <Grid item xs='6' >                    
                     <PatientVitals height={cardHeight}/> 
@@ -478,151 +443,11 @@ export default function ScrollableTabsButtonForce() {
 {/* End of dashboard */}
 
 {/* Begining of Service Form */}
+<TabPanel value={value} index={1}>
+ 
+            <Consultation getpatientdetails={props.location.state } height={cardHeight}/>
 
-      <TabPanel value={value} index={1}>
-        <Grid container spacing={2}>
-                <Grid item xs='6'>                    
-                    <Card className={classes.cardroot} >
-                        <CardContent>
-                            <Typography className={classes.title} color="primary" gutterBottom>
-                            Latest Vital Signs
-                            </Typography>
-                                <Grid container spacing={12}>
-                                    <Grid item xs='6'>
-                                        <Typography className={classes.pos} color="textSecondary" >
-                                                Pulse : <span style={{fontSize: 'bold'}}>56pm</span>
-                                               
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs='6'>
-                                        <Typography className={classes.pos} color="textSecondary" > 
-                                                Weight: 23kg
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs='6'>
-                                        <Typography className={classes.pos} color="textSecondary">
-                                                RR : 56pm
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs='6'>
-                                        <Typography className={classes.pos} color="textSecondary">
-                                                Height: 23kg
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs='6'>
-                                        <Typography className={classes.pos} color="textSecondary">
-                                                Tempreature : 56pm
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs='6'>
-                                        <Typography className={classes.pos} color="textSecondary">
-                                                BMI: 23kg
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs='6'>
-                                        <Typography className={classes.pos} color="textSecondary">
-                                                Blood Presure : 56pm
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs='6'>
-                                        <Typography className={classes.pos} color="textSecondary">
-                                                BMI Sstatus: 23kg
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs='23'>
-                                        <Typography className={classes.pos} color="textSecondary">
-                                                Paulse : 56pm
-                                        </Typography>
-                                    </Grid>
-                                    
-                                </Grid>                               
-                        </CardContent>                      
-                        </Card>                     
-                </Grid>
-               
-                <Grid item xs='6'>
-                
-                    <Card className={classes.cardroot} >
-                        <CardContent>
-                            <Typography className={classes.title} color="primary" gutterBottom>
-                            Allergies
-                            </Typography>
-                                <Grid container spacing={12}>
-                                    <Grid item xs='12'>
-                                        <Typography className={classes.pos} color="textSecondary" >
-                                        <div className={classes.allergiesroot}>
-                                           <Chip
-                                                label="Pencline"
-                                                color="secondary"
-                                                variant="outlined"
-                                            />
-                                            <Chip
-                                                label="Nut Shirm"
-                                                color="secondary"
-                                                variant="outlined"
-                                            />
-                                            <Chip
-                                                label="Deletable secondary"
-                                                color="secondary"
-                                                variant="outlined"
-                                            />
-                                            
-                                            </div>
-                                               
-                                        </Typography>
-                                    </Grid>
-                                    
-                                </Grid>                               
-                        </CardContent>                      
-                    </Card>
-                </Grid>
-            
-                <Grid item xs='6'>
-                    <Card className={classes.cardroot} style={{ height: '200px'}}>
-                            <CardContent>
-                                <Typography className={classes.title} color="primary" gutterBottom>
-                                Forms
-                                </Typography>
-                                    <Grid container spacing={12}>
-                                        <Grid item xs='12'>
-                                            <Typography className={classes.pos} color="textSecondary" >
-                                            <FormGroup>
-                                            
-                                            <Input type="textarea" name="text"  style={{height: '150px' }}/>
-                                            </FormGroup>
-                                                
-                                            </Typography>
-                                        </Grid>
-                                        
-                                    </Grid>                               
-                            </CardContent>                      
-                        </Card>
-                </Grid>
-                <Grid item xs='6'>
-                <Card className={classes.cardroot} style={{ height: '200px'}}>
-                            <CardContent>
-                                <Typography className={classes.title} color="primary" gutterBottom>
-                                Forms
-                                </Typography>
-                                    <Grid container spacing={12}>
-                                        <Grid item xs='12'>
-                                            <Typography className={classes.pos} color="textSecondary" >
-                                            <FormGroup>
-                                            
-                                            <Input type="textarea" name="text"  style={{height: '150px' }}/>
-                                            </FormGroup>
-                                                
-                                            </Typography>
-                                        </Grid>
-                                        
-                                    </Grid>                               
-                            </CardContent>                      
-                        </Card>
-                </Grid>
-            </Grid>
-
-      </TabPanel>
-{/* End of Service Form */}
+</TabPanel>     
  {/* Begining of consultation  */}
  <TabPanel value={value} index={2}>
       <Grid container spacing={2}>

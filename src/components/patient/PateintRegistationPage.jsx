@@ -1,4 +1,3 @@
-
 import Page from 'components/Page';
 import React, { useState, useEffect } from 'react';
 import MatButton from '@material-ui/core/Button';
@@ -37,6 +36,7 @@ import 'react-widgets/dist/css/react-widgets.css';
 import { DateTimePicker } from 'react-widgets';
 import Moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
+import moment from 'moment';
 // React Notification
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
@@ -97,8 +97,8 @@ const PatientRegistration = (props) => {
     const [provinces, setProvinces] = React.useState([]);
     const [relatives, setRelatives] = useState([]);
     const [relative, setRelative] = useState([{}]);
-    const [relationshipTypes, setRelationshipTypes] = React.useState([{id:"1", name:"Father"},{id:"2", name:"Mother"},
-    {id:"3", name:"Sister"},{id:"4", name:"Brother"}]);
+    const relationshipTypes = [{id:"1", name:"Father"},{id:"2", name:"Mother"},
+    {id:"3", name:"Sister"},{id:"4", name:"Brother"}];
 
     const [patient, setPatient] = useState({ 
         hospitalNumber:'',
@@ -120,47 +120,47 @@ const PatientRegistration = (props) => {
         zipCode:'',
         stateId:'',
         street:'',
+        dob:'',
         dateRegistration: new Date()
-    });  
-    
+});  
+    //console.log(patient);  
+    const newDatenow = moment(patient.dateRegistration).format('DD-MM-YYYY');
+    const newDob = moment(patient.dob).format('DD-MM-YYYY');
+    //console.log(date2);
     const [showLoading, setShowLoading] = useState(false);
-  //Saving of Patient Registration 
+    //Saving of Patient Registration 
     const savePatient = (e) => {
       //toast.warn("Processing Registration");
       setShowLoading(true);
       e.preventDefault();
       const data = { 
-            hospitalNumber: patient.hospitalNumber,           
-            dateRegistration: patient.dateRegistration,
-            facilityId: '1',
-           
-            "person": {
-                firstName: patient.firstName,
-                lastName:  patient.lastName, 
-                email:patient.email,
-                dob:patient.dob,
-                maritalStatusId:patient.maritalStatusId,
-                occupationId:patient.occupationId,
-                genderId:patient.genderId,
-                educationId:patient.educationId,           
-            "personContact": {
-                address1:patient.address1,
-                city:'1',
-                countryId:'1',
-                zipCode:patient.zipCode,
-                stateId:'1',
-                street:patient.street,
-                provinceId: 1
-            },
-            "personRelatives": relatives,
-        "titleId":1
-        }
-    };
+        hospitalNumber: patient.hospitalNumber,           
+        dateRegistration: newDatenow,
+        facilityId: '1',
+        firstName: patient.firstName,
+        lastName:  patient.lastName, 
+        email:patient.email,
+        dob:newDob,
+        maritalStatusId:patient.maritalStatusId,
+        occupationId:patient.occupationId,
+        genderId:patient.genderId,
+        educationId:patient.educationId,           
+        address1:patient.address1,
+        city:'1',
+        countryId:'1',
+        zipCode:patient.zipCode,
+        stateId:'1',
+        street:patient.street,
+        provinceId: 1,
+        personRelatives: relatives,
+        titleId:1
+        };
+    console.log(data);
 
       axios.post(apiUrl, data)
         .then((result) => {          
           setShowLoading(false);
-          props.history.push('/patient')
+          props.history.push('/patients')
           toast.success("Patient Registration Successful!");
         }).catch((error) => {
         setShowLoading(false)
@@ -245,8 +245,9 @@ const PatientRegistration = (props) => {
       const onRelativeChange = e => {
         //  e.preventDefault();
         setRelative({...relative, [e.target.name]: e.target.value});
+       
         }
-    
+
   return (
     <Page title="Patient Regsitration" >
         <ToastContainer autoClose={2000} />
@@ -395,7 +396,9 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                             <FormGroup check>
                                 <Label></Label>
-                                <Input type="checkbox" />Estimates Date of  Birth
+                                <Input type="checkbox" 
+                                
+                                />Estimates Date of  Birth
                                
                             </FormGroup>
                             </Col>
