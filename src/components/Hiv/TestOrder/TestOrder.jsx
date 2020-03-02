@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
@@ -24,7 +24,7 @@ import {
     Label,
   } from 'reactstrap';
 
-
+  import {url} from 'axios/url';
 
 
 const useStyles = makeStyles(theme => ({
@@ -68,7 +68,8 @@ const useStyles = makeStyles(theme => ({
       
       }));
    
-  
+     
+
 function not(a, b) {
     return a.filter(value => b.indexOf(value) === -1);
   }
@@ -81,8 +82,10 @@ export default function ConsultationPage(props) {
     const classes = useStyles();
 
     const [checked, setChecked] = React.useState([]);
-    const [left, setLeft] = React.useState([0, 1, 2, 3]);
-    const [right, setRight] = React.useState([4, 5, 6, 7]);
+    const [testGroups, setTestGroup] = React.useState([]);
+    //const [tests, setTests] = React.useState([]);
+    const [left, setLeft] = React.useState([]);
+    const [right, setRight] = React.useState([]);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -98,6 +101,7 @@ export default function ConsultationPage(props) {
     }
 
     setChecked(newChecked);
+    
   };
 
   const handleAllRight = () => {
@@ -122,11 +126,33 @@ export default function ConsultationPage(props) {
     setRight([]);
   };
 
+  useEffect(() => {
+    async function fetchTestGroup() {
+        try{
+      const response = await fetch(url+'encounters/laboratory/labtest-group');
+      const body = await response.json();          
+     setTestGroup(body.map(({ category, id }) => ({ label: category, value: id })));
+      }catch(error){
+          console.log(error);
+      }
+    }
+    fetchTestGroup();
+  }, []);
+
+  const getTestByTestGroup = (e) => {
+    const testGroupId = e.target.value;
+    async function fetchTests() {
+        const response = await fetch(url+"encounters/laboratory/"+testGroupId+"/labtest");
+        const testLists = await response.json();
+        setLeft(testLists.map(({ description, id }) => ({ name: description, id: id })));
+      }
+      fetchTests();
+}
   const customList = items => (
     <Paper className={classes.paper}>
       <List dense component="div" role="list">
         {items.map(value => {
-          const labelId = `transfer-list-item-${value}-label`;
+          const labelId = `transfer-list-item-${value.id}-label`;
 
           return (
             <ListItem key={value} role="listitem" button onClick={handleToggle(value)}>
@@ -138,7 +164,7 @@ export default function ConsultationPage(props) {
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={`List item ${value + 1}`} />
+              <ListItemText id={labelId} primary={value.name} />
             </ListItem>
           );
         })}
@@ -166,13 +192,14 @@ return (
                         <br/>
                         <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
                             <FormGroup>
-                                    <Label for="qualification">Please Select Test Order</Label>
-                                    <Input type="select" name="educationId" >
-                                        <option value="1">PHD</option>
-                                        <option value="2">MSC</option>
-                                        <option value="3">BSC</option>
-                                        <option value="4">HND</option>
-                                        <option value="5">NCE</option>
+                                    <Label for="testGroup">Please Select Test Order</Label>
+                                    <Input type="select" name="testGroup" onChange={getTestByTestGroup}>
+                                        <option value="">Select Test Group</option>
+                                        {testGroups.map(({ label, value }) => (
+                                                <option key={value} value={value}>
+                                                {label}
+                                                </option>
+                                                ))}
                                     </Input>
                                 </FormGroup> 
 

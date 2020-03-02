@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DataTable, { createTheme } from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 import { Form, Input } from 'reactstrap';
 import {Card, CardContent} from '@material-ui/core';
 import './PatientSearch.css';
