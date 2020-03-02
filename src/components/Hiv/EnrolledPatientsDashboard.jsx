@@ -10,10 +10,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-
 // {/* Auto textfield complete */}
-import TextField from '@material-ui/core/TextField';
-
 import {
     MdDashboard,
     MdContacts
@@ -21,22 +18,10 @@ import {
 import {GiFiles,GiTestTubes } from 'react-icons/gi';  
 import { FaBriefcaseMedical} from "react-icons/fa"; 
 //{/*  Check box list */}
-
 import { Line } from 'react-chartjs-2';
 import {
     ViralLoad,Weight
   } from 'demos/patientVIral';
-import {
-CardBody,
-Col,
-Row,
-
-} from 'reactstrap';
-import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
-
-//the paper for the patient detail at the header 
-
 import PatientAlert from 'components/PatientDashboard/PatientAlert';
 import PatientAllergies from 'components/PatientDashboard/PatientAllergies';
 import PatientVitals from 'components/PatientDashboard/PatientVitals';
@@ -45,7 +30,7 @@ import ClinicalHistory from 'components/PatientDashboard/ClinicalHistory';
 import Consultation from './consulatation/consultation';
 import PatientDetailCard from 'components/Functions/PatientDetailCard';
 import TestOrder from './TestOrder/TestOrder';
-
+import Medication from './Medication/Medication';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -180,17 +165,12 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: '#eee',
     },
     }));
-    const cardStyle = {
-        borbderColor: '#fff',
-        marginBottom: 10,
-    };
+
     const cardHeight = {
         height: 200, 
         position: 'relative',
         overflow: 'auto',
     };
-
-
 
 
 export default function ScrollableTabsButtonForce(props) {
@@ -388,103 +368,7 @@ export default function ScrollableTabsButtonForce(props) {
     {/* End of consultation */}
     <TabPanel value={value} index={4}>
         {/* Card stats */}
-        <Row>
-                <Col lg={4} >
-                  <Card  style={cardStyle} className=" p-3">
-                    <CardBody>
-                        <Typography className={classes.title} color="primary" gutterBottom>
-                                        Drug Order
-                        </Typography>
-                                <form className={classes.formroot} noValidate autoComplete="off">
-                                        
-                                        <div>
-                                            <TextField
-                                            required
-                                            id="outlined-required"
-                                            label="Enter Drug Name"
-                                            defaultValue="Drug Name"
-                                            variant="outlined"
-                                            />
-                                            <TextField
-                                            disabled
-                                            id="outlined-required"
-                                            label="Drug Unit"
-                                            defaultValue="Drug Unit"
-                                            variant="outlined"
-                                            />
-                                            <TextField
-                                            id="outlined-password-input"
-                                            label="Frequency"
-                                            autoComplete="current-password"
-                                            variant="outlined"
-                                            />
-                                            <TextField
-                                            id="outlined-read-only-input"
-                                            label="Start Date"
-                                            defaultValue="Start Date"
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
-                                            variant="outlined"
-                                            />
-                                            <TextField
-                                            id="outlined-number"
-                                            label="Duration"
-                                            type="number"
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            variant="outlined"
-                                            />
-                                            <TextField id="outlined-search" label="Duration Unit" type="text" variant="outlined" />
-                                            <TextField
-                                            id="outlined-helperText"
-                                            label="Enter Instruction"
-                                            defaultValue="Enter Instruction"
-                                            variant="outlined"
-                                            />
-                                             <br/>
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        className={classes.button}
-                                                    
-                                                        startIcon={<SaveIcon />}
-                                                    >
-                                                        Save
-                                                    </Button>
-                                        </div>
-                                    </form> 
-                    </CardBody>
-                  </Card>
-                </Col>
-                <Col lg={8} >
-                    <Row>
-                        <Col lg={12} >
-                            <Card  style={cardStyle} >
-                                <CardBody>
-                                    <Typography className={classes.title} color="primary" gutterBottom>
-                                            Previous Order
-                                    </Typography>                   
-                                </CardBody>
-                            </Card>
-                        </Col>
-                        <br/>
-                        <br/>
-                        <Col lg={12} >
-                            <Card  style={cardStyle} >
-                                <CardBody>
-                                    <Typography className={classes.title} color="primary" gutterBottom>
-                                            Current Order
-                                    </Typography>
-                                </CardBody>
-                            </Card>
-                        </Col>
-                    </Row>
-                  
-                </Col>
-               
-              </Row>
+        <Medication />
 
       </TabPanel>
       <TabPanel value={value} index={5}>
