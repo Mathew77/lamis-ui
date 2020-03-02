@@ -105,39 +105,39 @@ const useStyles = makeStyles(theme => ({
 
 export default function ConsultationPage(props) {
     const classes = useStyles();
-    // const getpatient = props.getpatientdetails.getpatient.row;
-    const {getpatient} =props.getpatientdetails ;
-    // console.log(props.getpatientdetails)
-   const PatientID = getpatient.row.patientId;
     
+    const {getpatient} =props.getpatientdetails ;
+   
+   const PatientID = getpatient.row.patientId;
+   const visitId = getpatient.row.id;
+   //console.log(getpatient);
     //Save Assign Clinician 
     const [consult, setconsult] = useState({ 
             present_consultation: '', 
-            patientId: '', 
-            visitId:'',
+            patientId: PatientID, 
+            visitId:visitId,
             consultation_notes:'',
             formName: 'CONSULTATION_FORM',
-            serviceName: 'CONSULTATION_SERVICE' 
+            serviceName: 'GENERAL_SERVICE' 
         }); 
         const [newAllergy, setNewAllergy] = useState([]);
 
     //    console.log(clinician);
     const [showLoading, setShowLoading] = useState(false);  
-    const apiUrl = url+"encounters/assign-clinican";  
+    const apiUrl = url+"encounters/GENERAL_SERVICE/CONSULTATION_FORM/"+PatientID;  
     const Saveconsult = (e) => { 
     e.preventDefault();  
 
     const data = {
-            formData :'',
-            present_consultation: '', 
-            patientId: '', 
-            visitId:'',
-            consultation_notes:'',
+            formData :newAllergy,
+            present_consultation: consult.present_consultation, 
+            patientId: PatientID, 
+            visitId:visitId,
+            consultation_notes: consult.consultation_notes,
             formName: 'CONSULTATION_FORM',
-            serviceName: 'CONSULTATION_SERVICE',
-            allergies: newAllergy
+            serviceName: 'GENERAL_SERVICE'
     }; 
-
+    console.log(data);
     axios.post(apiUrl, data)
         .then((result) => {          
             setShowLoading(false);
@@ -161,7 +161,7 @@ return (
 <form className={classes.form} onSubmit={Saveconsult}>
 <Grid container spacing={2}>
         <Grid item xs='6'>                    
-              <PatientVitals  height={props.height} getpatientID={PatientID}/>                 
+              <PatientVitals  height={props.height} getpatientID={PatientID} />                 
         </Grid>
        
         <Grid item xs='6'>
@@ -179,7 +179,7 @@ return (
                                     <Typography className={classes.pos} color="textSecondary" >
                                     <FormGroup>
                                     
-                                    <Input type="textarea" name="text"  style={{height: '150px' }} value={consult.appCodesetId}
+                                    <Input type="textarea" name="consultation_notes"  id="consultation_notes" style={{height: '150px' }} value={consult.consultation_notes}
                                     onChange={onChange}/>
                                     </FormGroup>
                                         
@@ -202,7 +202,7 @@ return (
                                     <Typography className={classes.pos} color="textSecondary" >
                                     <FormGroup>
                                     
-                                    <Input type="textarea" name="text"  style={{height: '150px' }} value={consult.appCodesetId}
+                                    <Input type="textarea" name="present_consultation"  id="present_consultation" style={{height: '150px' }} value={consult.present_consultation}
                                     onChange={onChange}/>
                                     <br></br>
                                     </FormGroup>

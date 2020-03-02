@@ -6,33 +6,22 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
+
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Chip from '@material-ui/core/Chip';
-import TagFacesIcon from '@material-ui/icons/TagFaces';
+
 // {/* Auto textfield complete */}
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import parse from 'autosuggest-highlight/parse';
-import match from 'autosuggest-highlight/match';
-// import {
-//     FaPlusCircle,
-// } from 'react-icons/fa';
-// import { Link } from 'react-router-dom';
+
 import {
     MdDashboard,
     MdContacts
   } from 'react-icons/md';
 import {GiFiles,GiTestTubes } from 'react-icons/gi';  
-import { FaBriefcaseMedical, FaChartLine} from "react-icons/fa"; 
+import { FaBriefcaseMedical} from "react-icons/fa"; 
 //{/*  Check box list */}
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
+
 import { Line } from 'react-chartjs-2';
 import {
     ViralLoad,Weight
@@ -41,35 +30,22 @@ import {
 CardBody,
 Col,
 Row,
-FormGroup,
+
 } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 
 //the paper for the patient detail at the header 
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-// import List from '@material-ui/core/List';
-// import ListItem from '@material-ui/core/ListItem';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import Artclinic from 'components/PatientDashboard/ArtClinic';
+
 import PatientAlert from 'components/PatientDashboard/PatientAlert';
 import PatientAllergies from 'components/PatientDashboard/PatientAllergies';
 import PatientVitals from 'components/PatientDashboard/PatientVitals';
 import PatientLabTest from 'components/PatientDashboard/PatientLabTest';
 import ClinicalHistory from 'components/PatientDashboard/ClinicalHistory';
 import Consultation from './consulatation/consultation';
-import   PatientDetailCard from 'components/Functions/PatientDetailCard';
+import PatientDetailCard from 'components/Functions/PatientDetailCard';
+import TestOrder from './TestOrder/TestOrder';
 
-const options = [
-  
-  'Pyxis',
-  'Sedna',
-  'Titania',
-  'Triton',
-  'Umbriel',
-];
-const ITEM_HEIGHT = 48;
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -225,39 +201,7 @@ export default function ScrollableTabsButtonForce(props) {
     setValue(newValue);
     
   };
-  const [chipData, setChipData] = React.useState([
-    { key: 0, label: 'Haemoglobin' },
-    { key: 1, label: 'HIV(Blood)' },
-    { key: 2, label: 'Absolute Cocunt' },
 
-  ]);
-
-  const handleDelete = chipToDelete => () => {
-    setChipData(chips => chips.filter(chip => chip.key !== chipToDelete.key));
-  };
-
-  const [state, setState] = React.useState({
-    gilad: true,
-    jason: false,
-    antoine: false,
-  });
-
-  const handleChangecheckbox = name => event => {
-    setState({ ...state, [name]: event.target.checked });
-  };
-
-  const { gilad, jason, antoine } = state;
-  const error = [gilad, jason, antoine].filter(v => v).length !== 2;
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
 
 
@@ -282,31 +226,12 @@ export default function ScrollableTabsButtonForce(props) {
           <Tab className={classes.title} label="Service Form" icon={<GiFiles />} {...a11yProps(2)} />
           <Tab className={classes.title} label="Test Order" icon={<GiTestTubes />} {...a11yProps(3)} />
           <Tab className={classes.title} label="Medication" icon={<FaBriefcaseMedical />} {...a11yProps(4)} />
-          <Tab className={classes.title} label="Others" icon={<FaChartLine />} {...a11yProps(5)}  onClick={handleClick}/>
+          {/* <Tab className={classes.title} label="Others" icon={<FaChartLine />} {...a11yProps(5)}  onClick={handleClick}/> */}
           
           
         </Tabs>
         <div>
-      
-      <Menu
-        id="long-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: 200,
-          },
-        }}
-      >
-        {options.map(option => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
+     
     </div>
       </AppBar>
       {/* The DashBoad Tab  */}
@@ -458,124 +383,7 @@ export default function ScrollableTabsButtonForce(props) {
 </TabPanel>
 
       <TabPanel value={value} index={3}>
-      <Grid container spacing={2}>
-                <Grid item xs='12'> 
-                    <Card className={classes.cardroot}>
-                            <CardContent>
-                                <Typography className={classes.title} color="primary" gutterBottom>
-                                    Selected Test Order
-                                </Typography>
-                                 
-                                <Paper className={classes.chiproot}>
-                                    {chipData.map(data => {
-                                        let icon;
-
-                                        if (data.label === 'React') {
-                                        icon = <TagFacesIcon />;
-                                        }
-
-                                        return (
-                                        <Chip
-                                            key={data.key}
-                                            icon={icon}
-                                            label={data.label}
-                                            onDelete={data.label === 'React' ? undefined : handleDelete(data)}
-                                            className={classes.chip}
-                                        />
-                                        );
-                                    })}
-                                </Paper>                                                                  
-                        </CardContent>                      
-                    </Card>
-                </Grid>
-            
-                <Grid item xs='12'>
-                    <Card className={classes.cardroot}>
-                            <CardContent>
-                                <Typography className={classes.title} color="primary" gutterBottom>
-                                Test Order
-                                </Typography>
-                                    <Grid container spacing={12}>
-                                        <Grid item xs='12'>
-                                            <Typography className={classes.pos} color="textSecondary" >
-                                            <Autocomplete
-                                                id="highlights-demo"
-                                                style={{ width: 300 }}
-                                                options={top100Films}
-                                                getOptionLabel={option => option.title}
-                                                renderInput={params => (
-                                                    <TextField {...params} label="Lab Test Group" variant="outlined" fullWidth margin="normal" />
-                                                )}
-                                                renderOption={(option, { inputValue }) => {
-                                                    const matches = match(option.title, inputValue);
-                                                    const parts = parse(option.title, matches);
-
-                                                    return (
-                                                    <div>
-                                                        {parts.map((part, index) => (
-                                                        <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                                                            {part.text}
-                                                        </span>
-                                                        ))}
-                                                    </div>
-                                                    );
-                                                }}
-                                                />   
-
-                                                <br/>
-                                                <div className={classes.checkboxroot}>
-                                                    <FormControl component="fieldset" className={classes.formControl}>
-                                                        <FormLabel component="legend">Assign responsibility</FormLabel>
-                                                        <FormGroup>
-                                                        <FormControlLabel
-                                                            control={<Checkbox checked={gilad} onChange={handleChangecheckbox('gilad')} value="gilad" />}
-                                                            label="Gilad Gray"
-                                                        />
-                                                        <FormControlLabel
-                                                            control={<Checkbox checked={jason} onChange={handleChangecheckbox('jason')} value="jason" />}
-                                                            label="Jason Killian"
-                                                        />
-                                                        <FormControlLabel
-                                                            control={
-                                                            <Checkbox checked={antoine} onChange={handleChangecheckbox('antoine')} value="antoine" />
-                                                            }
-                                                            label="Antoine Llorca"
-                                                        />
-                                                        </FormGroup>
-                                                        <FormHelperText>Be careful</FormHelperText>
-                                                    </FormControl>
-                                                    <FormControl required error={error} component="fieldset" className={classes.formControl}>
-                                                        <FormLabel component="legend">Pick two</FormLabel>
-                                                        <FormGroup>
-                                                        <FormControlLabel
-                                                            control={<Checkbox checked={gilad} onChange={handleChangecheckbox('gilad')} value="gilad" />}
-                                                            label="Gilad Gray"
-                                                        />
-                                                        <FormControlLabel
-                                                            control={<Checkbox checked={jason} onChange={handleChangecheckbox('jason')} value="jason" />}
-                                                            label="Jason Killian"
-                                                        />
-                                                        <FormControlLabel
-                                                            control={
-                                                            <Checkbox checked={antoine} onChange={handleChangecheckbox('antoine')} value="antoine" />
-                                                            }
-                                                            label="Antoine Llorca"
-                                                        />
-                                                        </FormGroup>
-                                                        <FormHelperText>You can display an error</FormHelperText>
-                                                    </FormControl>
-                                                    </div>
-                                                
-                                            </Typography>
-                                        </Grid>
-                                        
-                                    </Grid>                               
-                            </CardContent>                      
-                        </Card>
-
-                </Grid>
-                
-            </Grid>
+        <TestOrder getpatientdetails={props.location.state } height={cardHeight}/>
       </TabPanel>
     {/* End of consultation */}
     <TabPanel value={value} index={4}>
@@ -750,11 +558,3 @@ export default function ScrollableTabsButtonForce(props) {
   );
 }
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films = [ 
-    { title: 'Psycho', year: 1960 },
-    { title: 'The Green Mile', year: 1999 },
-    { title: 'The Intouchables', year: 2011 },
-    { title: 'Modern Times', year: 1936 },
-    { title: 'Raiders of the Lost Ark', year: 1981 },
-  ];
