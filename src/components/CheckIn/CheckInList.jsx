@@ -14,8 +14,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';  
 import TableHead from '@material-ui/core/TableHead';  
 import TablePagination from '@material-ui/core/TablePagination';  
-import TableRow from '@material-ui/core/TableRow';  
-import axios from 'axios';    
+import TableRow from '@material-ui/core/TableRow';     
 import { useState, useEffect } from 'react' ;
 import {
     MdDashboard, MdCancel
@@ -34,17 +33,17 @@ import {Button, Modal, ModalBody, ModalFooter, ModalHeader,
     Row,
     Form
 } from 'reactstrap'; 
-
 //Date Picker
 import 'react-widgets/dist/css/react-widgets.css';
 import { DateTimePicker } from 'react-widgets';
 import Moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
 import Spinner from 'react-bootstrap/Spinner';
+import moment from 'moment';
 // React Notification
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
-
+import axios from 'axios'; 
 import {url} from 'axios/url';
 //Dtate Picker package
 Moment.locale('en');
@@ -80,12 +79,12 @@ const StyledTableRow = withStyles(theme => ({
 
   
 
-export default function MatPaginationTable(props) {  
+export default function CheckInList(props) {  
   const classes = useStyles();  
 
   const [page, setPage] = React.useState(0);  
 
-  const [data, setData] = useState([]);  
+ 
   //Modal state
   const [modal, setModal] = useState(false);
 
@@ -93,29 +92,43 @@ export default function MatPaginationTable(props) {
     //end og modal state
   const [rowsPerPage, setRowsPerPage] = React.useState(5);  
   //Get list of Visit/checkin patients API 
-    const apipatient = url+"patients/";
+    const [data, setData] = useState([]); 
+    const apipatient = url+"patients";
     useEffect(() => {    
-
             const GetData = async () => {    
             const result = await axios(apipatient);    
-
-            setData(result.data);  
-            console.log(result.data);   
+            setData(result.data);    
             }  
             GetData();     
 
     }, []);   
+//get the user that need to be checked in 
+const [patientrow, setpatientValue] = useState();
 
-      //Save Checkedin 
-  const [checkin, setcheckedin] = useState({ dateVisitStart: '', timeVisitStart: '', visit_type_id:'' });  
+const getUsermodal = (patientrow)=> {
+ // setpatientValue(props.patientrow);
+ //const [newpatientrow, setnewpatientValue] = useState(newpatientid);
+  setModal(!modal);
+
+}
+//Save Checkedin 
+  
+  const [checkin, setcheckedin] = useState({ dateVisitStart: new Date(), timeVisitStart: null, visitTypeId:'', patientId:'' });  
   const [showLoading, setShowLoading] = useState(false);  
-  const apiUrl = url+"visits";  
+  const apiUrl =url+"visits";   
   
   const saveCheckedin = (e) => {  
-    e.preventDefault();  
 
-    const data = { dateVisitStart: checkin.dateVisitStart, timeVisitStart:checkin.dateVisitStart };  
-    console.log(data);
+    e.preventDefault();  
+    const newdateVisitStart = moment(checkin.dateVisitStart).format('DD-MM-YYYY');moment().format('HH.mm')
+    const newtimeVisitStart = moment(checkin.timeVisitStart).format('HH:mm');
+    const data = { 
+                    dateVisitStart: newdateVisitStart, 
+                    timeVisitStart:newtimeVisitStart, 
+                    visitTypeId:'2',
+                    patientId:patientrow
+                };  
+    console.log(data);          
     axios.post(apiUrl, data)
         .then((result) => {          
           setShowLoading(false);
@@ -125,7 +138,6 @@ export default function MatPaginationTable(props) {
         }).catch((error) => {
             console.log(error);
         setShowLoading(false)
-        setcheckedin(false);
         // console.log("Error in CreateBook!");
         //toast.error("Something went wrong!");
         }
@@ -145,7 +157,10 @@ export default function MatPaginationTable(props) {
     setPage(0);  
 
   };  
-
+  const onChange = (e) => {  
+    e.persist();  
+    setcheckedin({...checkin, [e.target.name]: e.target.value});  
+  }
   return (  
 
     <Paper className={classes.root}>  
@@ -177,7 +192,7 @@ export default function MatPaginationTable(props) {
 
             {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {  
               return (  
-
+                                
            <StyledTableRow >  
 
                 <TableCell component="th" scope="row">  
@@ -193,27 +208,31 @@ export default function MatPaginationTable(props) {
 
                 <TableCell align="right">
                     <Tooltip title="Patient Dashboard">
-                                    <Link to="/data-table1">
-                                        <IconButton aria-label="Collect Sample">
-                                            <MdDashboard size={20}/>
-                                        </IconButton>
-                                    </Link>
-                                </Tooltip>
-                                <Tooltip title="check in Patient">
-                                    <IconButton aria-label="Collect Sample">
-                                        < FaUserCheck size={20} onClick={toggle}/>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Closed Checked In Patient">
-                                    <IconButton aria-label="Closed Checked In Patient">
-                                        < MdCancel size={20} onClick={toggle}/>
-                                    </IconButton>
-                                </Tooltip></TableCell>  
+                        <Link to="/data-table1">
+                            <IconButton aria-label="Patient Dashboard">
+                                <MdDashboard size={20}/>
+                            </IconButton>
+                        </Link>
+                    </Tooltip>
+                    <Tooltip title="check in Patient">
+                        <IconButton aria-label="check in Patient" 
+                            onClick={() => {
+                                getUsermodal(setpatientValue(row.id));
+
+                                }} >
+                            < FaUserCheck size={20} />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Closed Checked In Patient">
+                        <IconButton aria-label="Closed Checked In Patient">
+                            < MdCancel size={20} onClick={toggle}/>
+                        </IconButton>
+                    </Tooltip>
+                </TableCell>  
  
 
               </StyledTableRow>  
-
-                 
+                
 
               );  
 
@@ -223,17 +242,18 @@ export default function MatPaginationTable(props) {
         </Table>  
             {/* The checkedin modal  */}
             <Modal isOpen={modal} toggle={toggle} size="lg">
-                <ModalHeader toggle={toggle}>Check In Patient</ModalHeader>
+            <Form onSubmit={saveCheckedin}>
+        <ModalHeader toggle={toggle}>Check In Patient </ModalHeader>
                 <ModalBody>
-                    <Form onSubmit={saveCheckedin}>
+                    
                     <Row form>
                     <Col md={4}>
-
+                        <Input type="hidden" name="patientId" value={patientrow}  onChange={value1 => setcheckedin({...checkin, patientId: value1})} ></Input>
                         <FormGroup>
                             <Label for="qualification">Visit Type</Label>
-                            <Input type="select" name="educationId" value={checkin.visit_type_id}  >
-                                <option value="1">Booked</option>
-                                <option value="2">Unbooked</option>
+                            <Input type="select" name="visitTypeId" value={checkin.visitTypeId}  onChange={onChange}>
+                                <option value="2">Booked</option>
+                                <option value="3">Unbooked</option>
 
                             </Input>
                         </FormGroup>
@@ -244,18 +264,22 @@ export default function MatPaginationTable(props) {
                     <FormGroup>
                         <Label for="middleName">Date Of Visit</Label>
                         
-                        <DateTimePicker time={false} name="dateRegistration"  id="dateRegistration"   />
+                        <DateTimePicker time={false} name="dateVisitStart"  id="dateVisitStart" value={checkin.dateVisitStart} 
+                        defaultValue={new Date()} max={new Date()}
+                        onChange={value1 => setcheckedin({...checkin, dateVisitStart: value1})}/>
+                        
                     </FormGroup>
                     </Col>
                     <Col md={4}>
                     <FormGroup>
                         <Label for="middleName">Time of Visit</Label>
                         
-                        <DateTimePicker date={false} name="dateRegistration"  id="dateRegistration"   />
+                        <DateTimePicker date={false} name="timeVisitStart"  id="timeVisitStart" 
+                        value={checkin.timeVisitStart}  defaultValue="clock"  onChange={value1 => setcheckedin({...checkin, timeVisitStart: value1})} />
                     </FormGroup>
                     </Col>
                 </Row>
-                </Form>
+               
                 </ModalBody>
                 <ModalFooter>
                 <Row>
@@ -268,9 +292,10 @@ export default function MatPaginationTable(props) {
                     } 
                     </Col> 
                     </Row>
-                    <Button color="primary" onClick={toggle}>Check In</Button>{' '}
-                    <Button color="secondary" onClick={toggle}>Close</Button>
+                    <Button color="primary"  type="submit" >Check In</Button>{' '}
+                    <Button color="secondary" onClick={() => toggle()}>Close</Button>
                 </ModalFooter>
+                </Form>
             </Modal>
       </TableContainer>  
 

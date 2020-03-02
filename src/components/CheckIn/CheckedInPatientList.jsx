@@ -68,7 +68,8 @@ export default function MatPaginationTable(props) {
     //end og modal state
   const [rowsPerPage, setRowsPerPage] = React.useState(5);  
   //Get list of Visit/checkin patients API 
-  const apipatient = url+"visits/";
+  const apipatient = url+"visits/datevisit/";
+  console.log(apipatient);
   useEffect(() => {    
         const GetData = async () => {    
           const result = await axios(apipatient);    
@@ -100,7 +101,7 @@ export default function MatPaginationTable(props) {
 
             <TableRow>  
 
-              <StyledTableCell>Patient ID</StyledTableCell>  
+              <StyledTableCell>Hospital No</StyledTableCell>  
               <StyledTableCell align="center">Patient Name</StyledTableCell>   
               <StyledTableCell align="center">Start Visit</StyledTableCell>
               <StyledTableCell align="center">End Visit</StyledTableCell>
@@ -123,7 +124,7 @@ export default function MatPaginationTable(props) {
                   {row.hospitalNumber}  
 
                 </TableCell>  
-                <TableCell align="center">{row.dateVisitStart}</TableCell>  
+              <TableCell align="center">{row.firstName} {''} {row.lastName}</TableCell>  
 
               <TableCell align="center">{row.dateVisitStart} {' '} {row.timeVisitStart} </TableCell>  
 
