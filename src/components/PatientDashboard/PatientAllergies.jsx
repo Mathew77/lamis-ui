@@ -4,8 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import MatButton from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
 import {
   Col,
   Form,
@@ -15,6 +13,7 @@ import {
   Row,
 } from 'reactstrap';
 import Chip from '@material-ui/core/Chip';
+import CreatableSelect from 'react-select/creatable';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,10 +33,20 @@ chip: {
 },
 }));
 
-export default function PatientAlert(props) {
-  const classes = useStyles(props);
+export const allergies = [
+  { value: 'penicilin', label: 'Penicilin' },
+  { value: 'egg', label: 'Egg' },
+  { value: 'milk', label: 'Milk' },
+  { value: 'peanut', label: 'Peanut'},
+];
 
+export default function PatientAlert(props ) {
+  const classes = useStyles(props);
+  const handleChange = (newValue: any, actionMeta: any) => {
+    props.setNewAllergy(newValue.map(it => it.value));
+  };
   return (
+
     <div className={classes.root}>
             <Card className={classes.cardroot} style={props.height}>
                     <CardContent>
@@ -49,66 +58,40 @@ export default function PatientAlert(props) {
                                     <Typography className={classes.pos} color="textSecondary" >
                                             
                                       <div className={classes.allergiesroot}>
+                                    
+                                      {props.patientAllergies ? props.patientAllergies.map((allergy, index) => (
                                     <Chip
-                                          label="Pencline"
+                                          label={allergy}
                                           color="secondary"
                                           variant="outlined"
                                       />
-                                      <Chip
-                                          label="Nut Shirm"
-                                          color="secondary"
-                                          variant="outlined"
-                                      />
-                                      <Chip
-                                          label="Deletable secondary"
-                                          color="secondary"
-                                          variant="outlined"
-                                      />
-                                      
+                                      )) : <Chip
+                                      label="No Allergy"
+                                      color="secondary"
+                                      variant="outlined"
+                                  />}
                                       </div>
                                     </Typography>
                                 </Grid>      
                             </Grid> 
+                            <br></br>
                             {props.addstatus && 
-                            <Form>
-                            <Card >  
-                                         
-                                <CardContent>
-                                
                                         <Row form>
-                                            <Col md={4}>
+                                            <Col md={12}>
                                             <FormGroup>
-                                            
-                                            <Input type="select" name="educationId" o>
-                                                    <option value="1">Allergies 1</option>
-                                                    <option value="2">Allergies</option>
-                                                    <option value="3">Allergies</option>
-                                                    <option value="4">Allergies</option>
-                                                    
-                                              </Input>
+                                            <CreatableSelect
+        isMulti
+        onChange={handleChange}
+        options={allergies}
+        placeholder="Add New Allergy"
+      />
+                                        
                                             </FormGroup>
                                             </Col>
-                                            <Col md={4}>
-                                            <FormGroup>
-                                                <Label for="altPhoneNumber"></Label>
-                                                <MatButton  
-                                                        type="submit" 
-                                                        variant="contained"
-                                                        color="primary"
-                                                        className={classes.button}
-                                                        startIcon={<SaveIcon />}
-                                                        >
-                                                        Add
-                                                </MatButton>
-                                            </FormGroup>
-                                            </Col>
-                                            
+                                           
                                         </Row>
 
-
-                                </CardContent> 
-                                </Card> 
-                                </Form>
+                            
                             }                            
                     </CardContent>                      
             </Card>

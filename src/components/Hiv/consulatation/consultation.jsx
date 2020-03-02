@@ -119,6 +119,8 @@ export default function ConsultationPage(props) {
             formName: 'CONSULTATION_FORM',
             serviceName: 'CONSULTATION_SERVICE' 
         }); 
+        const [newAllergy, setNewAllergy] = useState([]);
+
     //    console.log(clinician);
     const [showLoading, setShowLoading] = useState(false);  
     const apiUrl = url+"encounters/assign-clinican";  
@@ -132,7 +134,8 @@ export default function ConsultationPage(props) {
             visitId:'',
             consultation_notes:'',
             formName: 'CONSULTATION_FORM',
-            serviceName: 'CONSULTATION_SERVICE'
+            serviceName: 'CONSULTATION_SERVICE',
+            allergies: newAllergy
     }; 
 
     axios.post(apiUrl, data)
@@ -162,7 +165,7 @@ return (
         </Grid>
        
         <Grid item xs='6'>
-            <PatientAllergies height={props.height} addstatus={true}/>
+            <PatientAllergies height={props.height} addstatus={true} patientAllergies={["Penicilin"]} setNewAllergy={setNewAllergy}/>
         </Grid>
     
         <Grid item xs='6'>
@@ -183,7 +186,8 @@ return (
                                     </Typography>
                                 </Grid>
                                 
-                            </Grid>                               
+                            </Grid>   
+                                         
                     </CardContent>                      
                 </Card>
         </Grid>
@@ -200,9 +204,11 @@ return (
                                     
                                     <Input type="textarea" name="text"  style={{height: '150px' }} value={consult.appCodesetId}
                                     onChange={onChange}/>
+                                    <br></br>
                                     </FormGroup>
                                         
                                     </Typography>
+                                    
                                 </Grid>
                                 
                             </Grid>                               
