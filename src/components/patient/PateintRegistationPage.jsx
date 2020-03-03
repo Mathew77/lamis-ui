@@ -590,17 +590,17 @@ const PatientRegistration = (props) => {
                             <div className={classes.demo}>
                             <List>
                             {relatives.map((relative, index) => (
-        <RelativeList
-          key={index}
-          index={index}
-          relative={relative}
-          removeRelative={removeRelative}
-          relationshipTypeName={getRelationshipName(relative.relationshipTypeId)}
-        />
-      ))}
-                </List>
-      </div>
-      </Col>
+                            <RelativeList
+                            key={index}
+                            index={index}
+                            relative={relative}
+                            removeRelative={removeRelative}
+                            relationshipTypeName={getRelationshipName(relative.relationshipTypeId)}
+                            />
+                            ))}
+                            </List>
+                        </div>
+                        </Col>
                             </Row>
                             <Row>
                             <Col md={12}>

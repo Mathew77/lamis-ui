@@ -368,7 +368,7 @@ export default function ScrollableTabsButtonForce(props) {
     {/* End of consultation */}
     <TabPanel value={value} index={4}>
         {/* Card stats */}
-        <Medication />
+        <Medication getpatientdetails={props.location.state }  />
 
       </TabPanel>
       <TabPanel value={value} index={5}>
