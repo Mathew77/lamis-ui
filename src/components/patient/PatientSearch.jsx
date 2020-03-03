@@ -5,6 +5,7 @@ import {Card, CardContent} from '@material-ui/core';
 import './PatientSearch.css';
 import IconButton from '@material-ui/core/IconButton';
 import Delete from '@material-ui/icons/Delete';
+import {url} from 'axios/url';
 
 /**Find table documentations at
  * 1.https://www.npmjs.com/package/react-data-table-component#storybook-dependencies----rootdirstoriespackagejson
@@ -25,51 +26,63 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 );
 
 const SampleExpandedComponent = ({ data }) => (
-    <p>
-      {data.website} | {data.address.street} {data.address.city}
-    </p>
+  <div>
+    <span>
+   <b>  Date Of Registration:</b> {data.dateRegistration} </span> <br></br> <span><b>Date Of Birth:</b> {data.dob} </span>
+   </div>
 );
 const handleDelete = () => {
     
   console.log('clicked');
 };
+const calculate_age = (dob) => {
+  var today = new Date();
+  var dateParts = dob.split("-");
 
+  var dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]); 
+  var birthDate = new Date(dateObject);  // create a date object directly from `dob1` argument
+  console.log(dateObject);
+  console.log(birthDate);
+  var age_now = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+  {
+      age_now--;
+  }
+  console.log(age_now);
+  return age_now + ' year(s)';
+}
 const columns = [
   {
     name: 'Patient ID',
-    selector: 'id',
+    selector: 'hospitalNumber',
     sortable: false,
   },
   {
     name: 'Patient Name',
     selector: 'name',
     sortable: false,
+  cell: row => <span>{row.firstName} {row.lastName}</span>
   },
-  {
-    name: 'Phone Number',
-    selector: 'phone',
-    sortable: false,
-  },
-  {
-    name: 'Gender',
-    selector: 'username',
-    sortable: false,
-  },
+
   {
     name: 'Age',
-    selector: 'username',
+    selector: 'dob',
     sortable: false,
+    cell: row => <span>{calculate_age(row.dob)}</span>
   },
-  {
-      
-    cell: () =>  <IconButton color="primary" onClick={handleDelete} aria-label="Archive Patient" title="Archive Patient">
-    <Delete />
-  </IconButton>,
-    ignoreRowClick: true,
-    allowOverflow: true,
-    button: true,
-  },
+  
 ];
+
+/*{
+      
+  cell: () =>  <IconButton color="primary" onClick={handleDelete} aria-label="Archive Patient" title="Archive Patient">
+  <Delete />
+</IconButton>,
+  ignoreRowClick: true,
+  allowOverflow: true,
+  button: true,
+},*/
 const customStyles = {
   headCells: {
     style: {
@@ -80,18 +93,21 @@ const customStyles = {
     },
   }
 };
+
+
 const BasicTable = () => {
   const [filterText, setFilterText] = React.useState('');
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
   const [data, setData] = useState([])
   const filteredItems = data.filter(
-    item => (item.name && item.name.toLowerCase().includes(filterText.toLowerCase()))
-    || (item.id && item.id.toString().toLowerCase().includes(filterText.toLowerCase())));
+    item => (item.firstName && item.firstName.toLowerCase().includes(filterText.toLowerCase()))
+    || (item.lastName && item.lastName.toLowerCase().includes(filterText.toLowerCase()))
+    || (item.hospitalNumber && item.hospitalNumber.toLowerCase().includes(filterText.toLowerCase())));
   
   useEffect(() => {    
       async function fetchData() {
           try{
-        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        const response = await fetch(url+"patients");
         const result = await response.json(); 
         setData(result);
         console.log(result); 
@@ -114,6 +130,7 @@ const BasicTable = () => {
   }, [filterText, resetPaginationToggle]);
 
   return (
+    <div>
     <DataTable
       columns={columns}
       data={filteredItems}
@@ -129,6 +146,8 @@ const BasicTable = () => {
         expandableRows
         expandableRowsComponent={<SampleExpandedComponent />}
     />
+
+</div>
   );
 };
 
