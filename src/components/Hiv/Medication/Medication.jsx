@@ -4,20 +4,26 @@ import {
     CardBody,
     Col,
     Row,
-    Form,
     Card,
     FormGroup,
     Label,
-    Input
-    
+    Input,
+    Form
 } from 'reactstrap';
+import MatButton from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import 'react-widgets/dist/css/react-widgets.css';
 import { DateTimePicker } from 'react-widgets';
 import Moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 //import moment from 'moment';
 import { toast } from "react-toastify";
 import Spinner from 'react-bootstrap/Spinner';
@@ -139,13 +145,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function Medication(props) {
     const apicountries = url+"encounters/pharmacy/drugs";
-    const [countries, setCountries] = React.useState([]);
+    const [drugOrder, setdrugOrder] = React.useState([]);
      //Get countries     
       React.useEffect(() => {
         async function getCharacters() {
           const response = await fetch(apicountries);
           const body = await response.json();
-          setCountries(body.map(({ genericName, id }) => ({ label: genericName, value: id })));
+          setdrugOrder(body.map(({ genericName, id }) => ({ label: genericName, value: id })));
            //console.log(body);
         }
         getCharacters();
@@ -157,31 +163,40 @@ export default function Medication(props) {
     const PatientID = getpatient.row.patientId;
     const visitId = getpatient.row.id;
    //console.log(getpatient);
+   const [medis, setmedis] = useState([]);
+//    const [relative, setRelative] = useState([{}]);
+  
     //Save Assign Clinician 
-    const [consult, setconsult] = useState({ 
-            present_consultation: '', 
+    const [medi, setmedi] = useState({ 
+            dosage_frequency: '', 
             patientId: PatientID, 
             visitId:visitId,
-            consultation_notes:'',
-            formName: 'DRUG_ORDER_FORM',
-            serviceName: 'GENERAL_SERVICE' 
+            dosage_strength: '',
+            serviceName: '',
+            generic_name : '',
+            duration :  '',
+            duration_unit: '',
+            comment:'',
+            start_date : new Date()
+
         }); 
  
 
     //    console.log(clinician);
     const [showLoading, setShowLoading] = useState(false);  
-    const apiUrl = url+"encounters/GENERAL_SERVICE/CONSULTATION_FORM/"+PatientID;  
-    const SaveDrug = (e) => { 
+    const apiUrl = url+"encounters/GENERAL_SERVICE/DRUG_ORDER_FORM/"+PatientID;  
+    const savemedi = (e) => { 
+        console.log('the button is click');
     e.preventDefault();  
 
     const data = {
-            formData :'',
-            present_consultation: consult.present_consultation, 
+            formData :medi,
             patientId: PatientID, 
             visitId:visitId,
-            consultation_notes: consult.consultation_notes,
-            formName: 'CONSULTATION_FORM',
-            serviceName: 'GENERAL_SERVICE'
+            consultation_notes: medi.consultation_notes,
+            formName: 'DRUG_ORDER_FORM',
+            serviceName: 'GENERAL_SERVICE',
+
     }; 
     console.log(data);
     axios.post(apiUrl, data)
@@ -192,7 +207,7 @@ export default function Medication(props) {
         }).catch((error) => {
             console.log(error);
         setShowLoading(false)
-        setconsult(false);
+        setmedi(false);
 
         }
         ); 
@@ -200,11 +215,33 @@ export default function Medication(props) {
 
     const onChange = (e) => {
     e.persist();     
-    setconsult({...consult, [e.target.name]: e.target.value});
+    setmedi({...medi, [e.target.name]: e.target.value});
     } 
 
+  
+    const addDrugs= value => {
+        const allmedis = [...medis,  value ];
+        setmedi(allmedis);
+        console.log(medi);
+      };
+      
+      const removeDrug = index => {
+        const allMedis = [...medis];
+        allMedis.splice(index, 1);
+        setmedis(allMedis);
+      };
+    const handleAddDrugs = e => {
+        e.preventDefault();
+        if (!medi) return;
+        addDrugs(medi);
+        setmedi({start_date:"", duration_unit:"", comment:"",
+            duration:"", dosage_strength:"",drug_order:"", generic_name:"", dosage_frequency:""});
+      };
+
+      function getRelationshipName(id) {
+        return drugOrder.find(x => x.id === id).name;
+    }
   return (
-      <Form onSubmit={SaveDrug}>
           <Row>
                 <Col lg={5} >
                   <Card  style={cardStyle} className=" p-3">
@@ -212,16 +249,17 @@ export default function Medication(props) {
                         <Typography className={classes.title} color="primary" gutterBottom>
                                         Drug Order
                         </Typography>
-                                <form className={classes.formroot} noValidate autoComplete="off">
-                                        
-                                        <div>
+                         <div>
+                                        <Form className={classes.formroot}  onSubmit={savemedi}>
+
                                         <Col md={12}>
                                             <FormGroup>
-                                                <Input type="select" name="maritalStatusId" id="maritalStatusId" 
-                                                    value={consult.consultation_notes}
+                                            <Label for="hospitalNumber">Drug Generic Name</Label>
+                                                <Input type="select" name="drug_order" id="drug_order" 
+                                                    value={medi.drug_order}
                                                     onChange={onChange}>
-                                                    <Label for="maritalStatus">Marital Status</Label>
-                                                        {countries.map(({ label, value }) => (
+                                                    
+                                                        {drugOrder.map(({ label, value }) => (
                                                             <option key={value} value={value}>
                                                             {label}
                                                             </option>
@@ -232,8 +270,8 @@ export default function Medication(props) {
                                         <Col md={12}>
                                             <FormGroup>
                                             <Label for="hospitalNumber">Dosage Strength</Label>
-                                                <Input type="text" name="hospitalNumber" id="hospitalNumber" placeholder="Drug Unit" 
-                                                    value={consult.consultation_notes}
+                                                <Input type="text" name="duration_unit" id="duration_unit" placeholder="Dosage Strength" 
+                                                    value={medi.duration_unit}
                                                     onChange={onChange}
                                                 />
                                             </FormGroup>  
@@ -241,8 +279,8 @@ export default function Medication(props) {
                                         <Col md={12}>
                                             <FormGroup>
                                             <Label for="hospitalNumber">Dosage Frequency</Label>
-                                                <Input type="text" name="hospitalNumber" id="hospitalNumber" placeholder="Frequency" 
-                                                    value={consult.consultation_notes}
+                                                <Input type="text" name="dosage_frequency" id="dosage.fequency" placeholder="Dosage Frequency" 
+                                                    value={medi.dosageFrequency}
                                                     onChange={onChange}
                                                 />
                                             </FormGroup>  
@@ -250,15 +288,15 @@ export default function Medication(props) {
                                         <Col md={12}>
                                             <Label for="middleName">Start Date</Label>
                                 
-                                            <DateTimePicker time={false} name="dateRegistration"  id="dateRegistration"   
-                                            defaultValue={new Date()} max={new Date()}
-                                            />
+                                            <DateTimePicker time={false} name="start_date"  id="start_date"   value={medi.start}   onChange={value1 => setmedi({...medi, dateRegistration: value1})}
+                                                defaultValue={new Date()} max={new Date()}
+                                                />
                                         </Col>
                                         <Col md={12}>
                                             <FormGroup>
                                             <Label for="hospitalNumber">Duration</Label>
-                                                <Input type="text" name="hospitalNumber" id="hospitalNumber" placeholder="Duration" 
-                                                value={consult.consultation_notes}
+                                                <Input type="text" name="duration" id="duration" placeholder="Duration" 
+                                                value={medi.duration}
                                                 onChange={onChange}
                                                 />
                                             </FormGroup>  
@@ -266,7 +304,8 @@ export default function Medication(props) {
                                         <Col md={12}>
                                                 <FormGroup>
                                                 <Label for="hospitalNumber">Duration Unit</Label>
-                                                <Input type="select" name="genderId" id="genderId" >
+                                                <Input type="select" name="duration_unit" id="duration_unit"  value={medi.duration_unit}
+                                                        onChange={onChange}>
                                                     <option value="1">Days</option>
                                                     <option value="2">Weeks</option>
                                                     <option value="3">Months</option>
@@ -276,8 +315,8 @@ export default function Medication(props) {
                                          <Col md={12}>
                                                 <FormGroup>
                                                 <Label for="hospitalNumber">Enter Instruction</Label>
-                                                    <Input type="text" name="hospitalNumber" id="hospitalNumber" placeholder="Enter Instruction" 
-                                                        value={consult.consultation_notes}
+                                                    <Input type="text" name="comment" id="comment" placeholder="Enter Instruction" 
+                                                        value={medi.comment}
                                                         onChange={onChange}
                                                     />
                                                 </FormGroup>  
@@ -290,17 +329,22 @@ export default function Medication(props) {
                                             } 
                                              <br/>
 
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    className={classes.button}
-                                                
-                                                    startIcon={<SaveIcon />}
-                                                >
-                                                    Save
-                                                </Button>
+                                             <MatButton  
+                                                type="submit" 
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.button}
+                                                startIcon={<SaveIcon />}
+                                                onClick={handleAddDrugs}
+                                            >
+                                                Save
+                                            </MatButton>
+
+                                               </Form >
                                         </div>
-                                    </form> 
+
+                                      
+                                   
                     </CardBody>
                   </Card>
                 </Col>
@@ -321,7 +365,21 @@ export default function Medication(props) {
                             <Card  style={cardStyle} >
                                 <CardBody>
                                     <Typography className={classes.title} color="primary" gutterBottom>
-                                            Current Order
+                                    <Col md={12}>
+                                        <div className={classes.demo}>
+                                            <List>
+                                            {medis.map((medi, index) => (
+                                            <RelativeList
+                                            key={index}
+                                            index={index}
+                                            medi={medi}
+                                            removeDrug={removeDrug}
+                                            drugTypeName={getRelationshipName(medi.drug_order)}
+                                            />
+                                            ))}
+                                            </List>
+                                    </div>
+                                    </Col>
                                     </Typography>
                                 </CardBody>
                             </Card>
@@ -331,8 +389,40 @@ export default function Medication(props) {
                 </Col>
                
               </Row>
-      </Form>
-    
+         
   );
 }
+
+function RelativeList ({ medi, index, removeDrug, drug_order }) {
+
+    return (
+        <ListItem>
+                  <ListItemText
+                    primary={ <React.Fragment>
+                        {drug_order}, {medi.firstName} {medi.otherNames} {medi.lastName}</React.Fragment> }
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                         
+                          color="textPrimary"
+                        >
+                        {medi.mobilePhoneNumber} {medi.email} <br></br>
+                        </Typography>
+                        {medi.address}
+                      </React.Fragment>
+                    }
+                  />
+                  
+                  <ListItemSecondaryAction  onClick={() => removeDrug(index)}>
+                    <IconButton edge="end" aria-label="delete">
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                
+                
+    );
+  } 
 
