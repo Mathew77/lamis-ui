@@ -64,6 +64,7 @@ const PatientPage = (props) => {
                     <br/>
                     <CheckInList />
                    
+                   
                 </CardContent>
             </Card>
         </Page>
