@@ -240,6 +240,7 @@ const getUsermodal = (patientrow)=> {
 
           </TableBody>  
         </Table>  
+            
             {/* The checkedin modal  */}
             <Modal isOpen={modal} toggle={toggle} size="lg">
             <Form onSubmit={saveCheckedin}>

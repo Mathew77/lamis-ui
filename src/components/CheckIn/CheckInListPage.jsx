@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import { Form, Input } from 'reactstrap';
 import {Card, CardContent} from '@material-ui/core';
-import './PatientSearch.css';
 import IconButton from '@material-ui/core/IconButton';
 import Delete from '@material-ui/icons/Delete';
 import {url} from 'axios/url';
@@ -75,7 +74,15 @@ const columns = [
     sortable: false,
     cell: row => <span>{calculate_age(row.dob)}</span>
   },
-  
+  {
+      
+    cell: () =>  <IconButton color="primary" onClick={handleDelete} aria-label="Archive Patient" title="Archive Patient">
+    <Delete />
+  </IconButton>,
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+  },
 ];
 
 /*{
