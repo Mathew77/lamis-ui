@@ -130,7 +130,7 @@ const PatientRegistration = (props) => {
     const [showLoading, setShowLoading] = useState(false);
     //Saving of Patient Registration 
     const savePatient = (e) => {
-      //toast.warn("Processing Registration");
+      toast.info("Processing Registration");
       setShowLoading(true);
       e.preventDefault();
       const data = { 
@@ -158,10 +158,11 @@ const PatientRegistration = (props) => {
     console.log(data);
 
       axios.post(apiUrl, data)
-        .then((result) => {          
+        .then((result) => { 
+            toast.success("Patient Registration Successful!");         
           setShowLoading(false);
           props.history.push('/patients')
-          toast.success("Patient Registration Successful!");
+          
         }).catch((error) => {
         setShowLoading(false)
         }
@@ -250,7 +251,7 @@ const PatientRegistration = (props) => {
 
   return (
     <Page title="Patient Regsitration" >
-        <ToastContainer autoClose={2000} />
+        <ToastContainer  />
         <Alert color="primary">
         All Information with Asterisks(*) are compulsory 
       </Alert>
