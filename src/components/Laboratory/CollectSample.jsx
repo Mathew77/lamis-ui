@@ -9,7 +9,7 @@ import {
   Form, FormGroup, Label, Input 
 } from 'reactstrap';
 import { useState} from 'react';
-import { MdSearch} from 'react-icons/md';
+import { MdSave} from 'react-icons/md';
 import {TiArrowBack} from 'react-icons/ti';
 import MatButton from '@material-ui/core/Button';
 
@@ -36,11 +36,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow'; 
 import TableHead from '@material-ui/core/TableHead';   
 import Paper from '@material-ui/core/Paper';
-import Tooltip from '@material-ui/core/Tooltip';
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import IconButton from '@material-ui/core/IconButton';
 import Page from 'components/Page';
 import {url} from 'axios/url';
 import Spinner from 'react-bootstrap/Spinner';
@@ -131,7 +129,7 @@ export default function CollectSample(props){
 
   const toggle = () => setModal(!modal);
   const toggle3 = () => setModal3(!modal3);
-  const [encounterid, setencounterid] = useState('');
+  // const [encounterid, setencounterid] = useState('');
   const [labNum, setlabNum] = useState(['']);
   //const [patientrow, setpatientValue] = useState({date_sample_collected:new Date(), sample_collected:''});
   const TodayDate = moment(new Date()).format('DD-MM-YYYY');
@@ -150,14 +148,14 @@ export default function CollectSample(props){
 //const newDate = moment(patientrow.date_sample_collected).format('DD-MM-YYYY');
 
 
-const getUsermodal = (usercollection)=> {
-// setuservalue(user);
-console.log(usercollection);
-setencounterid(usercollection.encounterId);
-setpatientValue(usercollection.formData)
-setModal3(!modal3);
+// const getUsermodal = (usercollection)=> {
+// // setuservalue(user);
+// console.log(usercollection);
+// setencounterid(usercollection.encounterId);
+// setpatientValue(usercollection.formData)
+// setModal3(!modal3);
 
-}
+// }
 const saveDateofSample = (e) => {
   //toast.warn("Processing Registration");
   //setpatientValue({...patientrow, date_sample_collected: newDate});
@@ -167,7 +165,7 @@ const saveDateofSample = (e) => {
                       lab_number:labNum.lab_number
                   };
     console.log(datapost);
-  const newapiurl = apiUrl+encounterid;
+  const newapiurl = apiUrl//+encounterid;
   axios.put(newapiurl, datapost)
     .then((result) => {          
       setShowLoading(false);
@@ -186,7 +184,7 @@ const saveColllectSample = (e) => {
   e.preventDefault();
   const data = {  formData: patientrow };
     console.log(data);
-  const newapiurl = apiUrl+encounterid;
+  const newapiurl = apiUrl//+encounterid;
   axios.put(newapiurl, data)
     .then((result) => {          
       setShowLoading(false);
@@ -259,7 +257,7 @@ const onChangeLabnum = e => {
                                         />                                
                                 </Col>
                                 <Col md={2} >
-                                   <a href=""> <p style={{ paddingLeft:'30px', marginTop: '30px'}}> OR Generate </p> </a>          
+                                   <p style={{ paddingLeft:'30px', marginTop: '30px'}}> OR Generate </p>          
                                 </Col>
                                 <Col md={2} style={{ marginTop: '20px'}}>
                                     <DateTimePicker time={false} name="dateRegistration"  id="dateRegistration"  
@@ -275,7 +273,7 @@ const onChangeLabnum = e => {
                                         variant="contained"
                                         color="primary"
                                         className={classes.button}
-                                        startIcon={<MdSearch />}
+                                        startIcon={<MdSave />}
                                     >
                                         Save
                                     </MatButton>
