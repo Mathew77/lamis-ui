@@ -70,10 +70,12 @@ const PagesHiv = [
     Icon: FaUserPlus,
   },
   { to: '/hts-list', name: 'HTS', exact: false, Icon: GiTreeBeehive },
-  { to: '/case-management', name: 'Case Management', exact: false, Icon: GiTreeBeehive },
-  { to: '/pmtct', name: 'PMTCT', exact: false, Icon: GiTreeBeehive },
+  // { to: '/case-management', name: 'Case Management', exact: false, Icon: GiTreeBeehive },
+  // { to: '/pmtct', name: 'PMTCT', exact: false, Icon: GiTreeBeehive },
   { to: '/index-Search', name: 'Index Contract Tracking', exact: false, Icon: GiTreeBeehive },
   { to: '/client-status', name: 'Client Status Update', exact: false, Icon: GiTreeBeehive },
+  { to: '/eac-search', name: 'EAC', exact: false, Icon: GiTreeBeehive },
+  { to: '/democ-Search', name: 'Differentiated Care', exact: false, Icon: GiTreeBeehive },
 ];
 
 const navItems = [
@@ -297,7 +299,7 @@ class Sidebar extends React.Component {
               ))}
             </Collapse>
         {/* The HIV Menu  */}  
-          <NavItem
+          {/* <NavItem
                 className={bem.e('nav-item')}
                 onClick={this.handleClick('PagesAnc')}>
                 <BSNavLink className={bem.e('nav-item-collapse')}>
@@ -317,8 +319,8 @@ class Sidebar extends React.Component {
                     }}
                   />
                 </BSNavLink>
-              </NavItem> 
-              <Collapse isOpen={this.state.isOpenPagesAnc}>
+              </NavItem>  */}
+              {/* <Collapse isOpen={this.state.isOpenPagesAnc}>
                 {PagesAnc.map(({ to, name, exact, Icon }, index) => (
                   <NavItem key={index} className={bem.e('nav-item')}>
                     <BSNavLink
@@ -332,7 +334,7 @@ class Sidebar extends React.Component {
                     </BSNavLink>
                   </NavItem>
                 ))}
-              </Collapse>
+              </Collapse> */}
           </Nav>
         </div>
       </aside>
