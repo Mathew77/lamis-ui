@@ -13,16 +13,16 @@ import axios from 'axios';
 // import {
 //     MdCheckCircle,
 // } from 'react-icons/md';
-import {
-    IoMdEye
-} from 'react-icons/io';
+// import {
+//     IoMdEye
+// } from 'react-icons/io';
 import {
     MdAddBox
 } from 'react-icons/md';
 import {
     FaUserCheck
 } from 'react-icons/fa';
-import {Link} from 'react-router-dom';
+// import {Link} from 'react-router-dom';
 import { Modal, ModalBody,  ModalHeader} from 'reactstrap';
 import AddVitalsPage from 'components/Vitals/AddVitalsPage';
 import AssignClinician from 'components/Vitals/AssignClinician';
@@ -151,13 +151,13 @@ export default function VitalsSigns(props) {
                             ---
                             </TableCell>
                             <TableCell align="center">
-                                <Tooltip title="View Patient Vitals">
+                                {/* <Tooltip title="View Patient Vitals">
                                     <Link to="/view-vitals">
                                         <IconButton aria-label="Collect Sample">
                                             <IoMdEye size={20}/>
                                         </IconButton>
                                     </Link>
-                                </Tooltip>
+                                </Tooltip> */}
                                 <Tooltip title="Add Vitals">
                                         <IconButton aria-label="Collect Sample">
                                             <MdAddBox size={20} 

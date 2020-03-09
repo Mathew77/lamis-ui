@@ -1,52 +1,20 @@
-import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-
-const ModalExample = (props) => {
-  const {
-    buttonLabel,
-    className
-  } = props;
-  
-  const [modal, setModal] = useState(false);
-   const [user, setuservalue] = useState(null);
+import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import {fetchPost} from '../actions';
 
 
-  const toggle = (user) => {
-        setModal(!modal);
-  
+class testPage2 extends Component {
+  componentDidMount (){
+    this.props.fetchPost();
   }
-  
-  const getUsermodal = (user)=> {
-    // setuservalue(user);
-    setModal(!modal);
-
+  render() {
+    return (
+      <div> textInComponent </div>
+    );
   }
- 
-
-  return (
-    <div>
-      <Button color="danger" onClick={() => {
-        getUsermodal(setuservalue('mathew'));
-
-      }}>{buttonLabel}</Button>
-      <Modal isOpen={modal} toggle={toggle} className={className}>
-        <ModalHeader toggle={toggle}>Modal title</ModalHeader>
-        <ModalBody>
-    n culpa qui officia deserunt mollit anim id est laborum.
-          
-          <br />
-          {user}
-          
-          
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={toggle}>Do Something</Button>{' '}
-          <Button color="secondary" onClick={toggle}>Cancel</Button>
-        </ModalFooter>
-      </Modal>
-      
-    </div>
-  );
 }
 
-export default ModalExample;
+export default 
+connect (null,
+  {fetchPost}
+  )(testPage2)

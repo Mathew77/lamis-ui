@@ -1,10 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducers from './reducers';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "../node_modules/bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.css";
 import App from './App';
 import './styles/reactDataTable.css';
  
 
-ReactDOM.render(<App />, document.getElementById('root') );
+ReactDOM.render(
+    <Provider store={createStore(reducers)} >
+    <App />
+    </Provider>, 
+    document.getElementById('root') 
+    
+);
 

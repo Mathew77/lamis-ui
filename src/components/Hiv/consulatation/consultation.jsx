@@ -108,7 +108,8 @@ export default function ConsultationPage(props) {
     const {getpatient} =props.getpatientdetails ;
     const PatientID = getpatient.row.patientId;
     const visitId = getpatient.row.id;
-   //console.log(getpatient);
+//    console.log(getpatient);
+//    alert(getpatient);
     //Save Assign Clinician 
     const [consult, setconsult] = useState({ 
             present_consultation: '', 
