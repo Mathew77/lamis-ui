@@ -6,8 +6,8 @@ import reducers from './reducers';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "bootstrap/dist/css/bootstrap.css";
 import App from './App';
-import './styles/reactDataTable.css';
- 
+import './styles/formio.css';
+
 
 ReactDOM.render(
     <Provider store={createStore(reducers)} >

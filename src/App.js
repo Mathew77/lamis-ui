@@ -77,6 +77,7 @@ const DataTable1 = React.lazy(() => import('pages/DataTable/DataTable1'));
 const DataTable2 = React.lazy(() => import('pages/DataTable/DataTable2'));
 const TestPage = React.lazy(() => import('pages/TestPage'));
 const TestPage2 = React.lazy(() => import('pages/TestPage2'));
+const FormBuilder = React.lazy(() => import('pages/FormBuilder'));
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
 };
@@ -113,6 +114,7 @@ class App extends React.Component {
                 <Route exact path="/collected-sample" component={CollectedSample} />
                 <Route exact path="/test-result" component={TestResult} />
                 <Route exact path="/collect-sample" component={CollectSample} />
+                <Route exact path="/form-builder" component={FormBuilder} /> 
 
                 <Route exact path="/patients" component={PatientsPage} /> 
               
