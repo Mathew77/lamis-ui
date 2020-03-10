@@ -220,7 +220,7 @@ const PatientRegistration = (props) => {
     }
 
     function getRelationshipName(id) {
-        return relationshipTypes.find(x => x.id === id).name;
+        return id ? relationshipTypes.find(x => x.id === id).name : "";
     }
     
 
@@ -250,8 +250,8 @@ const PatientRegistration = (props) => {
         }
 
   return (
-    <Page title="Patient Regsitration" >
-        <ToastContainer  />
+    <Page title="Patient Registration" >
+        <ToastContainer autoClose={3000} />
         <Alert color="primary">
         All Information with Asterisks(*) are compulsory 
       </Alert>
@@ -280,7 +280,7 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="hospitalNumber">Patient Id</Label>
-                                <Input type="text" name="hospitalNumber" id="hospitalNumber" placeholder="Patient ID " value={patient.hospitalNumber} onChange={onChange}/>
+                                <Input type="text" name="hospitalNumber" id="hospitalNumber" placeholder="Patient ID " value={patient.hospitalNumber} onChange={onChange} required/>
                             </FormGroup>
                             </Col>
                             
@@ -290,7 +290,8 @@ const PatientRegistration = (props) => {
                                 
                                 <DateTimePicker time={false} name="dateRegistration"  id="dateRegistration"   value={patient.dateRegistration}   onChange={value1 => setPatient({...patient, dateRegistration: value1})}
                                 defaultValue={new Date()} max={new Date()}
-                                />
+                                
+                                required/>
                             </FormGroup>
                             </Col>
                             
@@ -299,7 +300,7 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="firstName">First Name</Label>
-                                <Input type="text" name="firstName" id="firstName" placeholder="First Name" value={patient.firstName} onChange={onChange} />
+                                <Input type="text" name="firstName" id="firstName" placeholder="First Name" value={patient.firstName} onChange={onChange} required/>
                             </FormGroup>
                             </Col>
                             
@@ -312,7 +313,7 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                             <FormGroup>
                                 <Label for="lastName">Last Name </Label>
-                                <Input type="text" name="lastName" id="lastName" placeholder="Last Name" value={patient.lastName} onChange={onChange} />
+                                <Input type="text" name="lastName" id="lastName" placeholder="Last Name" value={patient.lastName} onChange={onChange} required/>
                             </FormGroup>
                             </Col>
                         </Row>
@@ -321,7 +322,7 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                                 <FormGroup>
                                     <Label for="maritalStatus">Gender</Label>
-                                    <Input type="select" name="genderId" id="genderId" value={patient.genderId} onChange={onChange} >
+                                    <Input type="select" name="genderId" id="genderId" value={patient.genderId} onChange={onChange} required>
                                         <option value="1">Female</option>
                                         <option value="2">Male</option>
                                         
@@ -367,7 +368,7 @@ const PatientRegistration = (props) => {
                             <Col md={4}>
                             <FormGroup >
                                 <Label>Date OF Birth</Label>
-                                <DateTimePicker time={false} name="dob"  dropUp onChange={value1 => setPatient({...patient, dob: value1})} max={new Date()} />
+                                <DateTimePicker time={false} name="dob"  dropUp onChange={value1 => setPatient({...patient, dob: value1})} max={new Date()} required/>
 
                             </FormGroup>
                             </Col>

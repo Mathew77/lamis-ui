@@ -242,46 +242,7 @@ const onChangeLabnum = e => {
                 </Link>
               </CardHeader>
               <CardBody>
-              <Form  onSubmit={saveColllectSample}>
-                            <Row form >
-                              <Col md={3} style={{ marginTop: '20px'}}>
-                                        <Input
-                                            type="search"
-                                            placeholder="Lab. Number "
-                                            className="cr-search-form__input "
-                                            name="lab_number"
-                                            id="lab_number"
-                                            value={labNum.lab_number} 
-                                            onChangeLabnum={onChangeLabnum}
-                                             
-                                        />                                
-                                </Col>
-                                <Col md={2} >
-                                   <p style={{ paddingLeft:'30px', marginTop: '30px'}}> OR Generate </p>          
-                                </Col>
-                                <Col md={2} style={{ marginTop: '20px'}}>
-                                    <DateTimePicker time={false} name="dateRegistration"  id="dateRegistration"  
-                                    defaultValue={new Date()} max={new Date()}
-                                    />                             
-                                </Col>
-                               
-                                <Col md={2} style={{ marginTop: '20px'}}>
-                                <FormGroup>
-                                    
-                                    <MatButton  
-                                        type="submit" 
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.button}
-                                        startIcon={<MdSave />}
-                                    >
-                                        Save
-                                    </MatButton>
-                                </FormGroup>
-
-                                </Col>
-                            </Row>
-                        </Form>
+              
                       <br/>
                         <Row>
                           <Col>
@@ -327,7 +288,47 @@ const onChangeLabnum = e => {
                                     </TableBody>
                                     </Table>
                                 </TableContainer>
-                                
+                                <br/>
+                                <Form  onSubmit={saveColllectSample}>
+                            <Row form >
+                              <Col md={3} style={{ marginTop: '20px'}}>
+                                        <Input
+                                            type="search"
+                                            placeholder="Lab. Number "
+                                            className="cr-search-form__input "
+                                            name="lab_number"
+                                            id="lab_number"
+                                            value={labNum.lab_number} 
+                                            onChangeLabnum={onChangeLabnum}
+                                             
+                                        />                                
+                                </Col>
+                                <Col md={2} >
+                                   <p style={{ paddingLeft:'30px', marginTop: '30px'}}> OR Generate </p>          
+                                </Col>
+                                <Col md={2} style={{ marginTop: '20px'}}>
+                                    <DateTimePicker time={false} name="dateRegistration"  id="dateRegistration"  
+                                    defaultValue={new Date()} max={new Date()}
+                                    />                             
+                                </Col>
+                               
+                                <Col md={2} style={{ marginTop: '20px'}}>
+                                <FormGroup>
+                                    
+                                    <MatButton  
+                                        type="submit" 
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.button}
+                                        startIcon={<MdSave />}
+                                    >
+                                        Save
+                                    </MatButton>
+                                </FormGroup>
+
+                                </Col>
+                            </Row>
+                        </Form>
                             </Card>
                           </Col>
                         </Row>

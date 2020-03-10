@@ -3,8 +3,8 @@ import DataTable from 'react-data-table-component';
 import { Form, Input } from 'reactstrap';
 import {Card, CardContent} from '@material-ui/core';
 import './PatientSearch.css';
-import IconButton from '@material-ui/core/IconButton';
-import Delete from '@material-ui/icons/Delete';
+// import IconButton from '@material-ui/core/IconButton';
+// import Delete from '@material-ui/icons/Delete';
 import {url} from 'axios/url';
 
 /**Find table documentations at
@@ -31,10 +31,10 @@ const SampleExpandedComponent = ({ data }) => (
    <b>  Date Of Registration:</b> {data.dateRegistration} </span> <br></br> <span><b>Date Of Birth:</b> {data.dob} </span>
    </div>
 );
-const handleDelete = () => {
+// const handleDelete = () => {
     
-  console.log('clicked');
-};
+//   console.log('clicked');
+// };
 const calculate_age = (dob) => {
   var today = new Date();
   var dateParts = dob.split("-");

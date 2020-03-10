@@ -56,22 +56,22 @@ const AddVitalsPage = React.lazy(() => import('components/Vitals/AddVitalsPage')
 // const ArtClinic = React.lazy(() => import('components/Hiv/ArtClinic'));
 // const IndexContactSearch = React.lazy(() => import('components/Hts/IndexContactSearch'));
 /* HIV PAge Loading */
-const EnrollmentList = React.lazy(() => import('components/Hiv/EnrollmentList'));
-const HtsList = React.lazy(() => import('components/Hts/HtsList'));
-const RiskAssessment = React.lazy(() => import('components/Hts/RiskAssessment'));
-const HtsServices = React.lazy(() => import('components/Hts/HtsServices'));
-const EnrollPatient = React.lazy(() => import('components/Hiv/EnrollPatient'));
-const EnrolledPatients = React.lazy(() => import('components/Hiv/EnrolledPatients')); 
-const EnrolledPatientsDashboard = React.lazy(() => import('components/Hiv/EnrolledPatientsDashboard'));
-const ClientStatusSearch = React.lazy(() => import('components/ClientStatusUpdate/ClientStatusSearch'));
-const NewClientStatus = React.lazy(() => import('components/ClientStatusUpdate/NewClientStatus'));
-const ViewClientStatusList = React.lazy(() => import('components/ClientStatusUpdate/ViewClientStatusList'));
-const ViewStatusSearch = React.lazy(() => import('components/ClientStatusUpdate/ViewStatusSearch'));
-const ArtClinic = React.lazy(() => import('components/Hiv/ArtClinic'));
-const IndexContactSearch = React.lazy(() => import('components/Hts/IndexContactSearch'));
-const NewIndexContact = React.lazy(() => import('components/Hts/NewIndexContact'));
-const EacSearch = React.lazy(() => import('components/EAC/EacSearch'));
-const ViewEac = React.lazy(() => import('components/EAC/ViewEac'));
+// const EnrollmentList = React.lazy(() => import('components/Hiv/EnrollmentList'));
+// const HtsList = React.lazy(() => import('components/Hts/HtsList'));
+// const RiskAssessment = React.lazy(() => import('components/Hts/RiskAssessment'));
+// const HtsServices = React.lazy(() => import('components/Hts/HtsServices'));
+// const EnrollPatient = React.lazy(() => import('components/Hiv/EnrollPatient'));
+// const EnrolledPatients = React.lazy(() => import('components/Hiv/EnrolledPatients')); 
+// const EnrolledPatientsDashboard = React.lazy(() => import('components/Hiv/EnrolledPatientsDashboard'));
+// const ClientStatusSearch = React.lazy(() => import('components/ClientStatusUpdate/ClientStatusSearch'));
+// const NewClientStatus = React.lazy(() => import('components/ClientStatusUpdate/NewClientStatus'));
+// const ViewClientStatusList = React.lazy(() => import('components/ClientStatusUpdate/ViewClientStatusList'));
+// const ViewStatusSearch = React.lazy(() => import('components/ClientStatusUpdate/ViewStatusSearch'));
+// const ArtClinic = React.lazy(() => import('components/Hiv/ArtClinic'));
+// const IndexContactSearch = React.lazy(() => import('components/Hts/IndexContactSearch'));
+// const NewIndexContact = React.lazy(() => import('components/Hts/NewIndexContact'));
+// const EacSearch = React.lazy(() => import('components/EAC/EacSearch'));
+// const ViewEac = React.lazy(() => import('components/EAC/ViewEac'));
 /* Sample table i design */
 const DataTable1 = React.lazy(() => import('pages/DataTable/DataTable1'));
 const DataTable2 = React.lazy(() => import('pages/DataTable/DataTable2'));
@@ -145,7 +145,7 @@ class App extends React.Component {
                 <Route exact path="/View-client" component={ViewStatusSearch} />
                 <Route exact path="/enroll-patient-dashboard" component={EnrolledPatientsDashboard} /> */}
 
-                <Route exact path="/enrollment-list" component={EnrollmentList} />
+                {/* <Route exact path="/enrollment-list" component={EnrollmentList} />
                 <Route exact path="/hts-list" component={HtsList}/>
                 <Route exact path="/risk-assessment" component={RiskAssessment}/>
                 <Route exact path="/hts-services" component={HtsServices}/>
@@ -160,7 +160,7 @@ class App extends React.Component {
                 <Route exact path="/new-index" component={NewIndexContact} />
                 <Route exact path="/eac-search" component={EacSearch}/>
                 <Route exact path="/view-eac" component={ViewEac}/>
-                <Route exact path="/enroll-patient-dashboard" component={EnrolledPatientsDashboard} />
+                <Route exact path="/enroll-patient-dashboard" component={EnrolledPatientsDashboard} /> */}
                {/* The rout to that DataTabel */}
                <Route exact path="/data-table1" component={DataTable1} />
                <Route exact path="/data-table2" component={DataTable2} />

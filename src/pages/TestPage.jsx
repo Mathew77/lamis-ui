@@ -69,9 +69,9 @@ const cardStyle = {
 
 export default function ConsultationPage(props) {
    
-   const PatientID = 1;
-   const visitId = 2;
-   const saveTestUrl = url+"encounters/GENERAL_SERVICE/LABTEST_ORDER_FORM/"+PatientID; 
+  //  const PatientID = 1;
+  //  const visitId = 2;
+  //  const saveTestUrl = url+"encounters/GENERAL_SERVICE/LABTEST_ORDER_FORM/"+PatientID; 
 
     const classes = useStyles();
     const [showLoading, setShowLoading] = useState(false);  
@@ -117,9 +117,9 @@ export default function ConsultationPage(props) {
       </Form>
   );
 
-  const openServiceForm = () => {
-    console.log('clicked');
-  };
+  // const openServiceForm = () => {
+  //   console.log('clicked');
+  // };
 
   const columns = [
     {
